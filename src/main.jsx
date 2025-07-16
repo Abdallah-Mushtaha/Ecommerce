@@ -4,7 +4,7 @@ import React from "react";
 import App from "./App.jsx";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
+
 import ProductesDitales from "./Containers/ProductesDitales.jsx";
 import Layout from "./Containers/layout.jsx";
 import CartProvider from "./Components/context/cartContext.jsx";
