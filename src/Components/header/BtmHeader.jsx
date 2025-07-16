@@ -71,8 +71,10 @@ export default function BtmHeader() {
               <Link
                 to={link.link}
                 key={Linkes + index}
-                className={`hover:text-white hover:cursor-pointer hover:bg-black/10 gap-2 sm:p-5 px-[0.2rem]  
-    ${currentLocation.pathname === link.link ? "bg-black/50 text-white" : ""}`}
+                className={`hover:text-white hover:cursor-pointer hover:bg-white/20 gap-2 sm:p-5 px-[0.2rem]  
+    ${
+      currentLocation.pathname === link.link ? "bg-[#858585]/70 text-white" : ""
+    }`}
               >
                 <p>{link.title}</p>
               </Link>
