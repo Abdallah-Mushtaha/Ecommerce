@@ -8,8 +8,8 @@ import App from "../App";
 export default function Layout() {
   //  using outlet
   return (
-    <div className="bg-[#fff] w-screen min-h-screen inter">
-      <header>
+    <div className="bg-[#fff] w-screen min-h-screen inter ">
+      <header className="fixed top-0 left-0 right-0 bg-white z-[100] ">
         <Topheader />
         <BtmHeader />
       </header>

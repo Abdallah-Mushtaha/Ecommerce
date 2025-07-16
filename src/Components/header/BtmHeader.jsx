@@ -65,7 +65,7 @@ export default function BtmHeader() {
           </div>
         </div>
         {/* Nav Linkes */}
-        <div className="navLinkes flex gap-0 sm:gap-3 sm:gap-0  ">
+        <div className="navLinkes flex gap-0  sm:gap-0  ">
           {Linkes.map((link, index) => {
             return (
               <Link

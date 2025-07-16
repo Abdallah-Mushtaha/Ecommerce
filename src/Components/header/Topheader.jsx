@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 // import Logo from "../../img/logo.png";
 import { AiOutlineSearch } from "react-icons/ai";
 import { AiOutlineHeart } from "react-icons/ai";
 import { GiShoppingCart } from "react-icons/gi";
 import { BiStoreAlt } from "react-icons/bi";
+import { CartContext } from "../context/cartContext";
 
 export default function Topheader() {
+  const { cartItems } = useContext(CartContext);
   return (
     <div className="Topheader">
       <div className="py-5   text-white flex items-center justify-around">
         {/* Logo */}
-        <Link className="flex items-center   gap-2">
+        <Link className="flex items-center   gap-2 outline-none focus:outline-none">
           <BiStoreAlt
             className="w-18 sm:w-20  text-main size-10 "
             alt="logo.png"
@@ -39,14 +41,14 @@ export default function Topheader() {
         <div className="links flex gap-5">
           <Link to="/heart" className="relative text-3xl text-black">
             <AiOutlineHeart />
-            <span className="count text-sm absolute top-[-0.6rem] right-[-0.1rem] shadow-md flex items-center justify-center px-[0.2rem] bg-main text-white rounded-full ">
+            <span className="heart text-sm absolute top-[-0.4rem] right-[-0.4rem] shadow-md flex items-center justify-center px-[0.3rem] bg-main text-white rounded-full  ">
               0
             </span>
           </Link>
           <Link to="/cart" className="relative text-3xl text-black">
             <GiShoppingCart />
-            <span className="count text-sm absolute top-[-0.6rem] right-[-0.1rem] shadow-md flex items-center justify-center px-[0.2rem] bg-main text-white rounded-full ">
-              0
+            <span className="count text-sm absolute top-[-0.4rem] right-[-0.4rem] shadow-md flex items-center justify-center px-[0.3rem] bg-main text-white rounded-full ">
+              {cartItems.length}
             </span>
           </Link>
         </div>

@@ -5,7 +5,7 @@ import ProductesDitales from "./Containers/ProductesDitales";
 
 function App() {
   return (
-    <div className="bg-[#fff] w-screen h-screen inter ">
+    <div className="bg-[#fff] w-screen h-screen inter pt-52">
       <Home />
     </div>
   );

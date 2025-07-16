@@ -22,6 +22,7 @@ export default function ProductesDitales() {
   //  get the data of all products that have the same category
   useEffect(() => {
     const repo = async () => {
+      if (!iteme) return;
       try {
         const res = await fetch(
           `https://dummyjson.com/products/category/${iteme.category}`
@@ -34,6 +35,7 @@ export default function ProductesDitales() {
       }
     };
     repo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [iteme.category]);
 
   // Fetching iteme Data wich user click on
@@ -65,11 +67,17 @@ export default function ProductesDitales() {
           </div>
         </div>
       ) : (
-        <div className="hero container mx-auto mt-[4.5rem] flex flex-row gap-5 ">
+        <div className="hero container mx-auto mt-[4.5rem] flex flex-row gap-5 pt-52">
           {/* imgDev */}
           <div className="imgDev flex flex-col gap-2 px-5 sm:px-0">
-            <div className="bg_img w-5/6 mx-auto bg-bg  flex flex-row gap-2 rounded-3xl">
-              <img src={iteme.images[ImgIndex]} alt={iteme.title} />
+            <div className="bg_img w-4/6 mx-auto bg-bg  flex flex-row gap-2 rounded-3xl">
+              <img
+                src={
+                  iteme.images[ImgIndex] ??
+                  "https://via.placeholder.com/300x200?text=No+Image"
+                }
+                alt={iteme.title}
+              />
             </div>
             {/* Small imgs */}
             <div className="small w-20 sm:w-40  h-auto flex flex-row gap-2 cursor-pointer">
@@ -77,7 +85,9 @@ export default function ProductesDitales() {
                 // if clicked change the main img by index and onClick
                 <img
                   key={index}
-                  src={img}
+                  src={
+                    img ?? "https://via.placeholder.com/300x200?text=No+Image"
+                  }
                   alt={iteme.title}
                   onClick={() => {
                     setImgIndex(index);
@@ -86,7 +96,7 @@ export default function ProductesDitales() {
               ))}
             </div>
             {/* Items Ditales Box in Mobile */}
-            <div className=" container mx-auto flex flex-col gap-2 justify-center px-5  sm:hidden">
+            <div className=" container mx-auto  flex flex-col gap-2 justify-center px-5  lg:hidden">
               <h2 className="text-main font-bold text-md  sm:text-2xl flex flex-row justify-start items-center gap-3 ">
                 {iteme.title}
                 <button>
@@ -100,7 +110,7 @@ export default function ProductesDitales() {
                 <AiFillStar />
                 <FaStarHalfAlt />
               </div>
-              <small className="price text-black fw-bold text-sm sm:text-lg">
+              <small className="price text-black font-bold text-sm sm:text-lg">
                 ${iteme.price}
               </small>
               <h6 className="availabilityStatus font-bold">
@@ -117,17 +127,17 @@ export default function ProductesDitales() {
               <p className="text-gray-600/70 text-md tracking-tighter line-clamp- sm:w-full ">
                 {iteme.description}
               </p>
-              <small className="text-main fw-bold  text-lg py-2">
+              <small className="text-main font-bold  text-lg py-2">
                 Hurry Up! Only {iteme.stock} products left in stock.
               </small>
-              <button className="bg-main/80 transition text-white py-2 fw-bold px-3 rounded-full flex items-center gap-2 hover:bg-main justify-center my-5 text-center">
+              <button className="bg-main/80 transition text-white py-2 font-bold px-3 rounded-full flex items-center gap-2 hover:bg-main justify-center my-5 text-center">
                 Add to Cart
                 <GiShoppingCart />
               </button>
             </div>
           </div>
           {/* Items Ditales Box in Disktop  */}
-          <div className="itemDitales flex flex-col gap-2 justify-start sm:pt-10 items-start">
+          <div className="itemDitales sm:hidden lg:flex flex flex-col gap-2 justify-start sm:pt-10 items-start">
             <div className="hidden sm:block">
               <h2 className="text-main font-bold text-md  sm:text-2xl flex flex-row justify-start items-center gap-10 ">
                 {iteme.title}
@@ -142,7 +152,7 @@ export default function ProductesDitales() {
                 <AiFillStar />
                 <FaStarHalfAlt />
               </div>
-              <small className="price text-black fw-bold text-sm sm:text-lg">
+              <small className="price text-black font-bold text-sm sm:text-lg">
                 ${iteme.price}
               </small>
               <h6 className="availabilityStatus font-bold">
@@ -156,10 +166,10 @@ export default function ProductesDitales() {
               <p className="text-gray-600/70 text-md tracking-tighter line-clamp- sm:w-full ">
                 {iteme.description}
               </p>
-              <small className="text-main fw-bold  text-lg py-2">
+              <small className="text-main font-bold  text-lg py-2">
                 Hurry Up! Only {iteme.stock} products left in stock.
               </small>
-              <button className="bg-main/80 transition text-white py-2 fw-bold px-3 rounded-full flex items-center gap-2 hover:bg-main justify-center my-5 text-center">
+              <button className="bg-main/80 transition text-white py-2 font-bold px-3 rounded-full flex items-center gap-2 hover:bg-main justify-center my-5 text-center">
                 Add to Cart
                 <GiShoppingCart />
               </button>

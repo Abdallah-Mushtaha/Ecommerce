@@ -65,13 +65,14 @@ export default function Home() {
     <div>
       <HeroSlider />
       {Loading ? (
-        <div className="flex flex-col bg-neutral-300 w-56 h-64 animate-pulse rounded-xl container mx-auto px-4 sm:px-6 lg:px-8 m-5 py-5 my-9">
-          <div className="bg-neutral-400/50 w-full h-32 animate-pulse rounded-md py-4"></div>
-          <div className="flex flex-col gap-2">
-            <div className="bg-neutral-400/50 w-full h-4 animate-pulse rounded-md"></div>
-            <div className="bg-neutral-400/50 w-4/5 h-4 animate-pulse rounded-md"></div>
-            <div className="bg-neutral-400/50 w-full h-4 animate-pulse rounded-md"></div>
-            <div className="bg-neutral-400/50 w-2/4 h-4 animate-pulse rounded-md"></div>
+        <div className="w-screen h-screen flex items-center justify-center">
+          <div class="flex flex-row gap-2 ">
+            <div class="animate-pulse bg-gray-300 w-14 h-14 rounded-lg"></div>
+            <div class="flex flex-col gap-2">
+              <div class="animate-pulse bg-gray-300 w-28 h-5 rounded-lg"></div>
+              <div class="animate-pulse bg-gray-300 w-36 h-3 rounded-lg"></div>
+              <div class="animate-pulse bg-gray-300 w-36 h-2 rounded-lg"></div>
+            </div>
           </div>
         </div>
       ) : (

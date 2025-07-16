@@ -7,16 +7,21 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import ProductesDitales from "./Containers/ProductesDitales.jsx";
 import Layout from "./Containers/layout.jsx";
+import CartProvider from "./Components/context/cartContext.jsx";
+import Cart from "./Containers/Cart.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<App />} />
-          <Route path="productes/:id" element={<ProductesDitales />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<App />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="productes/:id" element={<ProductesDitales />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
   </React.StrictMode>
 );
