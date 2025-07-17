@@ -45,7 +45,7 @@ export default function Productes({ item }) {
   return (
     <PageTransitions>
       <div
-        className="productes relative w-full h-[350px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main pb-6   hover:shadow-md  "
+        className="productes relative w-full h-[350px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main pb-6   hover:shadow-md   "
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -61,12 +61,12 @@ export default function Productes({ item }) {
           to={`/productes/${item.id}`}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <div className="imageProducts w-full object-cover h-[200px] mb-8">
+          <div className="imageProducts w-full object-cover h-[200px] mb-8 flex justify-center items-cente ">
             <img
-              className="w-50 h-50 object-center"
+              className="w-50 h-50  object-center"
               src={
                 item.images.find((img) => !!img) ??
-                "https://via.placeholder.com/300x200?text=No+Image"
+                "https://placehold.co/600x400"
               }
               alt="product"
             />

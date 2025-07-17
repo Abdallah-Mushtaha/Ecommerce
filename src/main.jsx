@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
 import CategoryPage from "./Containers/CategoryPage.jsx";
 import Favorites from "./Containers/Favorites.jsx";
+import SearchResult from "./Components/SearchResult.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/" element={<Layout />}>
               <Route index element={<App />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/search" element={<SearchResult />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/category/:category" element={<CategoryPage />} />
               <Route path="productes/:id" element={<ProductesDitales />} />
