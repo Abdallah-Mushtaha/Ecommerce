@@ -48,7 +48,7 @@ export default function CategoryPage() {
 
         <div className="flex  flex-wrap items-center gap-4  justify-start">
           {products.map((item) => (
-            <div className="w-[15rem] h-30">
+            <div className="sm:w-[15rem] w-[19rem] sm:h-30 mx-auto">
               <Productes item={item} />
             </div>
           ))}
