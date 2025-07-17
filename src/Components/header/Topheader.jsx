@@ -13,7 +13,10 @@ export default function Topheader() {
     <div className="Topheader">
       <div className="py-5   text-white flex items-center justify-around">
         {/* Logo */}
-        <Link className="flex items-center   gap-2 outline-none focus:outline-none">
+        <Link
+          to="/"
+          className="flex items-center   gap-2 outline-none focus:outline-none"
+        >
           <BiStoreAlt
             className="w-18 sm:w-20  text-main size-10 "
             alt="logo.png"
@@ -39,7 +42,7 @@ export default function Topheader() {
         </form>
         {/* Linkes  */}
         <div className="links flex gap-5">
-          <Link to="/heart" className="relative text-3xl text-black">
+          <Link to="/favorites" className="relative text-3xl text-black">
             <AiOutlineHeart />
             <span className="heart text-sm absolute top-[-0.4rem] right-[-0.4rem] shadow-md flex items-center justify-center px-[0.3rem] bg-main text-white rounded-full  ">
               0

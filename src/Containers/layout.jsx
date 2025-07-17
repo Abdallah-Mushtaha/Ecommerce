@@ -1,4 +1,3 @@
-import React from "react";
 import Topheader from "../Components/header/Topheader";
 import BtmHeader from "../Components/header/BtmHeader";
 import { Outlet } from "react-router-dom";

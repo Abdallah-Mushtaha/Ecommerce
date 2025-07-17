@@ -26,6 +26,10 @@ export default function BtmHeader() {
       .then((data) => setCategories(data));
   }, []);
 
+  useEffect(() => {
+    categoresNavList.current.classList.add("hidden");
+  }, [currentLocation.pathname]);
+
   return (
     <div className="BtmHeader bg-main text-white text-md   ">
       <div className="   flex items-baseline justify-around flex-wrap py-2 sm:py-0">
@@ -46,11 +50,14 @@ export default function BtmHeader() {
           {/* Catiegorie Nav list comes from api */}
           <div
             ref={categoresNavList}
-            className="categoresNavList absolute top-[10rem]  flex flex-col gap-2 max-h-[10rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10 "
+            className="categoresNavList absolute top-[10rem]  flex flex-col gap-2 max-h-[12rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10   "
           >
             {categories.map((category, index) => {
               return (
-                <Link to={category.slug} key={categories + index}>
+                <Link
+                  to={`/category/${category.slug}`}
+                  key={categories + index}
+                >
                   <p
                     className=" border-b-2 border-gray-200 p-2 hover:bg-main hover:text-white "
                     onClick={() => {

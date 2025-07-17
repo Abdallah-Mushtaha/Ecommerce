@@ -1,7 +1,4 @@
-import BtmHeader from "./Components/header/BtmHeader";
-import Topheader from "./Components/header/Topheader";
 import Home from "./Containers/Home";
-import ProductesDitales from "./Containers/ProductesDitales";
 
 function App() {
   return (

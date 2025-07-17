@@ -1,9 +1,10 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SpeakerImage from "../../src/img/banner_Hero1.jpg";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import Img1 from "../../src/img/banner_Hero2.jpg";
+import imgg from "../../src/img/banner_Hero1.jpg";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import { Link } from "react-router-dom";
 
@@ -51,8 +52,9 @@ export default function HeroSlider() {
               </div>
             </div>
           </div>
+
           <img
-            src={SpeakerImage}
+            src={imgg}
             className="w-full h-[40vh] sm:h-full object-cover object-center"
             alt="Mini XGU Speaker"
           />
@@ -83,7 +85,7 @@ export default function HeroSlider() {
             </div>
           </div>
           <img
-            src={SpeakerImage}
+            src={Img1}
             className="w-full h-[40vh] sm:h-full object-cover object-center"
             alt="Mini XGU Speaker"
           />

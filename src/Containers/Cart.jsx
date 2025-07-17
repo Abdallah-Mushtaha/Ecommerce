@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CartContext } from "../Components/context/cartContext";
 import { MdDelete } from "react-icons/md";
 export default function Cart() {
   //  will get the cart items from the context
   // will check if the cart is empty or not
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, increseQuantity, removeCartItem, decreseQuantity } =
+    useContext(CartContext);
   console.log(cartItems);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div
@@ -20,7 +25,10 @@ export default function Cart() {
           {/* Items will be here */}
           {cartItems.map((item) => {
             return (
-              <div className="Wrapper flex justify-between  items-center border-t-2 border-border ">
+              <div
+                key={item.title}
+                className="Wrapper flex justify-between  items-center border-t-2 border-border "
+              >
                 <div className="rightSide mt-5 py-5 flex gap-5">
                   {" "}
                   <div className="image  ">
@@ -39,13 +47,19 @@ export default function Cart() {
                       ${item.price}
                     </div>
                     <div className="controller Quantity">
-                      <button className="remove bg-gray-200 border border-gray-400/20 px-2">
+                      <button
+                        className="remove bg-gray-200 border border-gray-400/20 px-2"
+                        onClick={() => decreseQuantity(item.id)}
+                      >
                         -
                       </button>
                       <span className=" bg-gray-200 border border-gray-400/20 px-2 ">
-                        1
+                        {item.quantity}
                       </span>
-                      <button className="add  bg-gray-200 border border-gray-400/20 px-2">
+                      <button
+                        className="add  bg-gray-200 border border-gray-400/20 px-2"
+                        onClick={() => increseQuantity(item.id)}
+                      >
                         +
                       </button>
                     </div>
@@ -54,7 +68,10 @@ export default function Cart() {
                 {/* Delete Button here will Deleted item from the cart "LocalStorage" */}
                 <div className="leftSide">
                   <button>
-                    <MdDelete className="text-red-600  size-[35px] flex justify-center items-center rounded-md relative sm:right-16 hover:size-[40px] transition-all" />
+                    <MdDelete
+                      className="text-red-600  size-[35px] flex justify-center items-center rounded-md relative sm:right-16 hover:size-[40px] transition-all"
+                      onClick={() => removeCartItem(item.id)}
+                    />
                   </button>
                 </div>
               </div>
@@ -63,7 +80,12 @@ export default function Cart() {
           <div className="Total flex justify-between mx-6 border-b-2 border-border pb-2 mt-2">
             <h1 className="text-2xl font-bold text-end text-black">Total : </h1>
             <h1 className="text-2xl font-bold text-end text-black mt-4 ">
-              ${cartItems.reduce((acc, item) => parseInt(acc + item.price), 0)}
+              $
+              {cartItems.reduce(
+                // will calculate the total price the old cuantity + the new quantity * number of items
+                (acc, item) => parseInt(acc + item.price * item.quantity),
+                0
+              )}
             </h1>
           </div>
           <div className="mx-6">
