@@ -95,7 +95,7 @@ export default function MobileProductInfo({ items }) {
         Hurry Up! Only {items.stock} products left in stock.
       </small>
       <button
-        className={`  py-3 font-bold px-3 w-48 rounded-full flex items-center gap-2  hover:text-white hover:shadow-xl shadow-black justify-center my-5 text-center transition-all ${
+        className={`  py-3 font-bold px-3 w-48 rounded-full flex items-center gap-2   hover:shadow-xl shadow-black justify-center my-5 text-center transition-all ${
           isINCart || ClickedCart
             ? "bg-black/0 border-2 text-black/90  bg-white  border-black   hover:text-black"
             : "bg-black/100 text-white border-none"
