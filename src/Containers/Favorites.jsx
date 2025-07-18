@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { CartContext } from "../Components/context/cartContext";
-import SlideProductes from "../Components/sideProductes/SlideProductes";
+import SlideProductes from "../Components/sideProductes/slideProductes";
 
 export default function Favorites() {
   //  will get the cart items from the context
