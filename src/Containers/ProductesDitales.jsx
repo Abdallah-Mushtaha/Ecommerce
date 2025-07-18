@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaStarHalfAlt } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { AiFillStar } from "react-icons/ai";
-import { GiShoppingCart } from "react-icons/gi";
-import { AiOutlineHeart } from "react-icons/ai";
 import SlideProductes from "../Components/sideProductes/slideProductes";
 import ProductInfo from "../Components/sideProductes/ProductInfo";
 import MobileProductInfo from "../Components/sideProductes/MobileProductInfo";

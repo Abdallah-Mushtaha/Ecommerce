@@ -32,9 +32,9 @@ export default function BtmHeader() {
 
   return (
     <div className="BtmHeader bg-main text-white text-md   ">
-      <div className="   flex items-baseline justify-around flex-wrap py-2 sm:py-0">
+      <div className="flex flex-col sm:flex-row items-center justify-around py-4 sm:py-0">
         {/* Ctegories */}
-        <div className="categoresNav flex flex-col ">
+        <div className="categoresNav flex flex-col mb-2 sm:mb-0">
           {/* CategorieBTN */}
           <button
             className="categoriesBtn flex items-center gap-2 relative"
@@ -50,7 +50,7 @@ export default function BtmHeader() {
           {/* Catiegorie Nav list comes from api */}
           <div
             ref={categoresNavList}
-            className="categoresNavList absolute top-[10rem]  flex flex-col gap-2 max-h-[12rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10   "
+            className="categoresNavList absolute top-[10rem]   flex-col gap-2 max-h-[12rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10   "
           >
             {categories.map((category, index) => {
               return (
@@ -88,7 +88,7 @@ export default function BtmHeader() {
             );
           })}
         </div>
-        <div className="signIn_regester flex gap-3">
+        <div className="signIn_regester hidden sm:flex gap-3">
           <button className="signIn">
             <FiUserPlus className="size-5" />
           </button>
