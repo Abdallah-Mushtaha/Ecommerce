@@ -9,7 +9,7 @@ import { CartContext } from "../context/cartContext";
 import SearchBox from "../SearchBox";
 
 export default function Topheader() {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, favoriteItems } = useContext(CartContext);
   return (
     <div className="Topheader">
       <div className="py-5 mx-5  text-white flex items-center justify-around">
@@ -37,7 +37,7 @@ export default function Topheader() {
           <Link to="/favorites" className="relative text-3xl text-black">
             <AiOutlineHeart />
             <span className="heart text-sm absolute top-[-0.4rem] right-[-0.4rem] shadow-md flex items-center justify-center px-[0.3rem] bg-main text-white rounded-full  ">
-              0
+              {favoriteItems.length}
             </span>
           </Link>
           <Link to="/cart" className="relative text-3xl text-black">

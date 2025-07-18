@@ -18,7 +18,7 @@ export default function SearchResult() {
         );
         const data = await res.json();
         setSearchResult(data.products || []);
-        console.log(data.products);
+        // console.log(data.products);
       } catch (error) {
         console.log("Filed to fetch data :: " + error);
       } finally {

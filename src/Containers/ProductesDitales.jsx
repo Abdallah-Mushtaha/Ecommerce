@@ -74,7 +74,7 @@ export default function ProductesDitales() {
           //  This Div need Refactor To Be best Practeses
           <div className="hero container mx-auto mt-[4.5rem] flex flex-row gap-5 pt-52">
             {/* imgDev */}
-            <ProductImg items={iteme} />
+            <ProductImg items={iteme} Loading={Loading} />
             {/* Items Ditales Box in Disktop  */}
             <ProductInfo items={iteme} />
           </div>

@@ -14,9 +14,15 @@ export default function SearchBox() {
     if (searchTraker.trim()) {
       navegate(`/search?query=${encodeURI(searchTraker)}`);
       setSearchTraker("");
+      setSugistions([]);
     }
-    setSugistions([]);
   };
+  useEffect(() => {
+    // if Click any way to close the sugistions
+    document.body.addEventListener("click", () => {
+      setSugistions([]);
+    });
+  }, []);
   //   console.log(searchTraker);
   useEffect(() => {
     const fetchSugistions = async () => {
@@ -60,12 +66,13 @@ export default function SearchBox() {
           id="search"
           autoCapitalize="off"
           autoComplete="off"
+          value={searchTraker}
           onChange={(e) => {
             setSearchTraker(e.target.value);
+            setSugistions([]);
           }}
-          onClick={(e) => {
+          onClick={() => {
             setSearchTraker("");
-            e.target.value = "";
           }}
         />
         <button className="search_btn bg-main p-3 rounded-full" type="submit">
@@ -82,10 +89,16 @@ export default function SearchBox() {
                 onClick={() => {
                   navegate(`/productes/${item.id}`);
                   setSugistions([]);
-                  setSearchTraker(" ");
+                  setSearchTraker("");
                 }}
               >
-                <div className="flex gap-2 justify-start  items-center">
+                <div
+                  className={`  ${
+                    sugistions.length > 0
+                      ? "flex gap-2 justify-start  items-center"
+                      : "hidden"
+                  }`}
+                >
                   <img
                     className="size-20 h-20 object-cover flex justify-start items-start"
                     src={item.thumbnail}

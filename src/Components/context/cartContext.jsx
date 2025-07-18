@@ -4,6 +4,34 @@ import React, { createContext, useEffect, useState } from "react";
 export const CartContext = createContext();
 
 export default function CartProvider({ children }) {
+  // ======= Favorite Context =========
+
+  const [favoriteItems, setFavoriteItems] = useState(() => {
+    const storeFavoriteItems = localStorage.getItem("favoriteItems");
+    return storeFavoriteItems ? JSON.parse(storeFavoriteItems) : [];
+  });
+
+  // will use useEffect to update the localStorage built apove any changes
+  useEffect(() => {
+    localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+  }, [favoriteItems]);
+
+  const addFavoriteItem = (item) => {
+    //  will check if the item is already in the favoriteItems or not
+    const isItemInFavorite = favoriteItems.some(
+      (favoriteItem) => favoriteItem.id === item.id
+    );
+    if (!isItemInFavorite) {
+      setFavoriteItems((prevItems) => [...prevItems, item]);
+    }
+  };
+
+  const removeFavoriteItem = (id) => {
+    setFavoriteItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  //  ======= Cart Conterxt ===========
+
   // need use state to check the localStorage if have any items before to set the cartItems else will be an empty array
   const [cartItems, setCartItems] = useState(() => {
     const storedCartItems = localStorage.getItem("cartItems");
@@ -54,6 +82,9 @@ export default function CartProvider({ children }) {
         increseQuantity,
         decreseQuantity,
         removeCartItem,
+        addFavoriteItem,
+        removeFavoriteItem,
+        favoriteItems,
       }}
     >
       {children}

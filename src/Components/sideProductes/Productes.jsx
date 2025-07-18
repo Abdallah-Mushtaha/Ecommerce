@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { GiShoppingCart } from "react-icons/gi";
@@ -10,42 +10,65 @@ import toast from "react-hot-toast";
 import PageTransitions from "../PageTransitions";
 
 export default function Productes({ item }) {
-  const { cartItems, addCartItem } = useContext(CartContext);
+  // Check if the item is already in the cart or not
 
-  const handleAddToCart = () => {
-    addCartItem(item);
-    toast.success(
-      <div className="container flex gap-5 p-5 rounded-md shadow-lg shadow-black">
-        <img
-          src={item.images[0]}
-          className="w-20 h-20 object-cover"
-          alt={item.title}
-        />
-        <div className="content flex flex-col">
-          <h5 className="text-md font-bold ">{item.title}</h5>
-          <small className="py-1 text-md">Items Added</small>
-          <Link
-            to="/cart"
-            className="p-2 cursor-pointer rounded-md text-white flex justify-center items-center
-             bg-black/50 hover:bg-black/100  transition-all"
-          >
-            <button>View Cart</button>
-          </Link>
-        </div>
-      </div>
-    );
+  const {
+    cartItems,
+    addCartItem,
+    removeCartItem,
+    addFavoriteItem,
+    removeFavoriteItem,
+    favoriteItems,
+  } = useContext(CartContext);
+
+  const [ClickedFav, setClickedFav] = useState(false);
+
+  const isINFavorite = favoriteItems.some(
+    (favoriteItem) => favoriteItem.id === item.id
+  );
+
+  const handelFavCart = () => {
+    if (isINFavorite) {
+      removeFavoriteItem(item.id);
+      setClickedFav(false);
+    } else {
+      addFavoriteItem(item);
+      setClickedFav(true);
+      toast.success(
+        <h1 className="text-md font-normal">{item.title}Added To Favorite</h1>
+      );
+    }
+
+    console.log(favoriteItems);
   };
+
+  //   Cart Items
+
   // Check if the item is already in the cart or not
   const isINCart = cartItems.some((cartitem) => cartitem.id === item.id);
+  const [ClickedCart, setClickedCart] = useState(false);
+
+  const handleAddToCart = () => {
+    if (isINCart) {
+      removeCartItem(item.id);
+      setClickedCart(false);
+    } else {
+      addCartItem(item);
+      setClickedCart(true);
+      toast.success(
+        <h1 className="text-md font-normal">{item.title}Added To Cart</h1>
+      );
+    }
+  };
 
   // console.log(cartItems); // to check the cartItems added
 
   const ShowIcones = useRef();
-  const [isHovered, setIsHovered] = React.useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <PageTransitions>
       <div
-        className="productes relative w-full h-[350px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main pb-6   hover:shadow-md   "
+        className="productes relative w-full h-[380px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main transition-all pb-6   hover:shadow-md   "
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -82,7 +105,7 @@ export default function Productes({ item }) {
             <AiFillStar />
             <FaStarHalfAlt />
           </div>
-          <div className="price px-3 font-bold text-md text-main">
+          <div className="price px-3 font-bold text-md text-green-600">
             ${item.price}
           </div>
         </Link>
@@ -95,13 +118,24 @@ export default function Productes({ item }) {
           }`}
         >
           <div
-            className={`size-15 bg-bg p-5 rounded-full flex justify-center items-center text-main cursor-pointer 
-          ${isINCart ? "bg-main/80 text-white pointer-events-none " : ""} `}
+            className={`size-15 p-5 rounded-full flex justify-center items-center cursor-pointer 
+          ${
+            ClickedCart || isINCart
+              ? "bg-black/90 text-white   "
+              : "bg-bg text-main"
+          } `}
             onClick={handleAddToCart}
           >
             <GiShoppingCart />
           </div>
-          <div className="size-15 bg-bg p-5 rounded-full flex justify-center items-center text-main cursor-pointer">
+          <div
+            className={`size-15 p-5 rounded-full flex justify-center items-center  cursor-pointer ${
+              ClickedFav || isINFavorite
+                ? "bg-red-500/90 text-white  "
+                : "bg-bg text-main "
+            }`}
+            onClick={handelFavCart}
+          >
             <AiOutlineHeart />
           </div>
           <div className="size-15 bg-bg p-5 rounded-full flex justify-center items-center text-main cursor-pointer">
