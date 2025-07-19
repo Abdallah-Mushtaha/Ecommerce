@@ -3,6 +3,7 @@ import BtmHeader from "../Components/header/BtmHeader";
 import { Outlet } from "react-router-dom";
 
 import App from "../App";
+import Footer from "../Components/Footer";
 
 export default function Layout() {
   //  using outlet
@@ -16,6 +17,7 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

@@ -56,7 +56,7 @@ export default function SearchBox() {
     <div className="relative flex flex-col justify-center items-center">
       <form
         onSubmit={handelSubmit}
-        className="Search_item w-full flex bg-gray-100 p-2  items-center rounded-full relative z-10"
+        className="Search_item w-full flex bg-gray-300 p-2  items-center rounded-full relative z-[100] "
       >
         <input
           className="outline-none w-full px-4 py-1 bg-transparent text-gray-600  font-semibold text-sm  "

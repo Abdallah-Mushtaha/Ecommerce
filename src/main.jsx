@@ -14,6 +14,10 @@ import CategoryPage from "./Containers/CategoryPage.jsx";
 import Favorites from "./Containers/Favorites.jsx";
 import SearchResult from "./Components/SearchResult.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute.jsx";
+import AboutSection from "./Containers/About.jsx";
+import ContactUs from "./Containers/ConcatUs.jsx";
+import BlogPage from "./Containers/BlogPage.jsx";
+import AccessoriesPage from "./Containers/Accessories.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -29,6 +33,38 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 element={
                   <ProtectedRoute>
                     <App />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <ProtectedRoute>
+                    <AboutSection />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <ProtectedRoute>
+                    <ContactUs />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/Acsessories"
+                element={
+                  <ProtectedRoute>
+                    <AccessoriesPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/blog"
+                element={
+                  <ProtectedRoute>
+                    <BlogPage />
                   </ProtectedRoute>
                 }
               />

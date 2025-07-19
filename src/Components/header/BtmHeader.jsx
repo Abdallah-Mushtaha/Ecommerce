@@ -14,7 +14,7 @@ export default function BtmHeader() {
     { title: "Home", link: "/" },
     { title: "About", link: "/about" },
     { title: "Acsessories", link: "/Acsessories" },
-    { title: "Plogs", link: "/plogs" },
+    { title: "Blogs", link: "/blog" },
     { title: "Contact", link: "/contact" },
   ];
   // to track categories
@@ -23,80 +23,94 @@ export default function BtmHeader() {
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then((res) => res.json())
-      .then((data) => setCategories(data));
+      .then((data) => setCategories(data))
+      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     categoresNavList.current.classList.add("hidden");
   }, [currentLocation.pathname]);
 
-  return (
-    <div className="BtmHeader bg-main text-white text-md   ">
-      <div className="flex flex-col sm:flex-row items-center justify-around py-4 sm:py-0">
-        {/* Ctegories */}
-        <div className="categoresNav flex flex-col mb-2 sm:mb-0">
-          {/* CategorieBTN */}
-          <button
-            className="categoriesBtn flex items-center gap-2 relative"
-            onClick={() => {
-              // IF clicked show categoriesNavList else hide
-              categoresNavList.current.classList.toggle("hidden");
-            }}
-          >
-            <FiMenu />
-            <p>Categories</p>
-            <IoMdArrowDropdown />
-          </button>
-          {/* Catiegorie Nav list comes from api */}
-          <div
-            ref={categoresNavList}
-            className="categoresNavList absolute top-[10rem]   flex-col gap-2 max-h-[12rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10   "
-          >
-            {categories.map((category, index) => {
+  if (!categories) {
+    <div className="w-screen h-screen flex items-center justify-center">
+      <div className="flex flex-row gap-2 ">
+        <div className="animate-pulse bg-gray-300 w-14 h-14 rounded-lg"></div>
+        <div className="flex flex-col gap-2">
+          <div className="animate-pulse bg-gray-300 w-28 h-5 rounded-lg"></div>
+          <div className="animate-pulse bg-gray-300 w-36 h-3 rounded-lg"></div>
+          <div className="animate-pulse bg-gray-300 w-36 h-2 rounded-lg"></div>
+        </div>
+      </div>
+    </div>;
+  } else {
+    return (
+      <div className="BtmHeader bg-main text-white text-md   ">
+        <div className="flex flex-col sm:flex-row items-center justify-around py-4 sm:py-0">
+          {/* Ctegories */}
+          <div className="categoresNav flex flex-col mb-2 sm:mb-0">
+            {/* CategorieBTN */}
+            <button
+              className="categoriesBtn flex items-center gap-2 relative"
+              onClick={() => {
+                // IF clicked show categoriesNavList else hide
+                categoresNavList.current.classList.toggle("hidden");
+              }}
+            >
+              <FiMenu />
+              <p>Categories</p>
+              <IoMdArrowDropdown />
+            </button>
+            {/* Catiegorie Nav list comes from api */}
+            <div
+              ref={categoresNavList}
+              className="categoresNavList absolute top-[10rem]   flex-col gap-2 max-h-[12rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10   "
+            >
+              {categories.map((category, index) => {
+                return (
+                  <Link
+                    to={`/category/${category.slug}`}
+                    key={categories + index}
+                  >
+                    <p
+                      className=" border-b-2 border-gray-200 p-2 hover:bg-main hover:text-white "
+                      onClick={() => {
+                        categoresNavList.current.classList.add("hidden");
+                      }}
+                    >
+                      {category.name}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+          {/* Nav Linkes */}
+          <div className="navLinkes flex gap-0  sm:gap-0  ">
+            {Linkes.map((link, index) => {
               return (
                 <Link
-                  to={`/category/${category.slug}`}
-                  key={categories + index}
+                  to={link.link}
+                  key={Linkes + index}
+                  className={`hover:text-white hover:cursor-pointer hover:bg-white/20 gap-2 sm:p-5 px-[0.2rem]  
+    ${
+      currentLocation.pathname === link.link ? "bg-[#858585]/70 text-white" : ""
+    }`}
                 >
-                  <p
-                    className=" border-b-2 border-gray-200 p-2 hover:bg-main hover:text-white "
-                    onClick={() => {
-                      categoresNavList.current.classList.add("hidden");
-                    }}
-                  >
-                    {category.name}
-                  </p>
+                  <p>{link.title}</p>
                 </Link>
               );
             })}
           </div>
-        </div>
-        {/* Nav Linkes */}
-        <div className="navLinkes flex gap-0  sm:gap-0  ">
-          {Linkes.map((link, index) => {
-            return (
-              <Link
-                to={link.link}
-                key={Linkes + index}
-                className={`hover:text-white hover:cursor-pointer hover:bg-white/20 gap-2 sm:p-5 px-[0.2rem]  
-    ${
-      currentLocation.pathname === link.link ? "bg-[#858585]/70 text-white" : ""
-    }`}
-              >
-                <p>{link.title}</p>
-              </Link>
-            );
-          })}
-        </div>
-        <div className="signIn_regester hidden sm:flex gap-3">
-          <button className="signIn">
-            <FiUserPlus className="size-5" />
-          </button>
-          <button className="regester">
-            <FaSignInAlt className="size-5" />
-          </button>
+          <div className="signIn_regester hidden sm:flex gap-3">
+            <button className="signIn">
+              <FiUserPlus className="size-5" />
+            </button>
+            <button className="regester">
+              <FaSignInAlt className="size-5" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

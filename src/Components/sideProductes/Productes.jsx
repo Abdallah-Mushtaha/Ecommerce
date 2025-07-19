@@ -65,84 +65,98 @@ export default function Productes({ item }) {
 
   const ShowIcones = useRef();
   const [isHovered, setIsHovered] = useState(false);
-  return (
-    <PageTransitions>
-      <div
-        className="productes relative w-full h-[380px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main transition-all pb-6   hover:shadow-md   "
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div
-          className={`flex justify-center items-center gap-[5px] mx-auto w-33 px-3 py-1 text-white bg-black/90 rounded-b-md  font-bolder translate-y-[-100%] transition opacity-90 ${
-            isINCart ? "translate-y-[0%]" : ""
-          }`}
-        >
-          <AiOutlineCheck className="text-green-500" />
-          Done
-        </div>
-        <Link
-          to={`/productes/${item.id}`}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          <div className="imageProducts w-full object-cover h-[200px] mb-8 flex justify-center items-cente ">
-            <img
-              className="w-50 h-50  object-center"
-              src={
-                item.images.find((img) => !!img) ??
-                "https://placehold.co/600x400"
-              }
-              alt="product"
-            />
-          </div>
 
-          <p className="nameProduct text-md normal  line-clamp-2 px-3">
-            {item.title}
-          </p>
-          <div className="stars flex px-3 text-yellow-500 py-2">
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <FaStarHalfAlt />
-          </div>
-          <div className="price px-3 font-bold text-md text-green-600">
-            ${item.price}
-          </div>
-        </Link>
+  if (!item) {
+    <div className="w-screen h-screen flex items-center justify-center">
+      <div className="flex flex-row gap-2 ">
+        <div className="animate-pulse bg-gray-300 w-14 h-14 rounded-lg"></div>
+        <div className="flex flex-col gap-2">
+          <div className="animate-pulse bg-gray-300 w-28 h-5 rounded-lg"></div>
+          <div className="animate-pulse bg-gray-300 w-36 h-3 rounded-lg"></div>
+          <div className="animate-pulse bg-gray-300 w-36 h-2 rounded-lg"></div>
+        </div>
+      </div>
+    </div>;
+  } else {
+    return (
+      <PageTransitions>
         <div
-          ref={ShowIcones}
-          className={`icons absolute top-1/4 right-3 flex gap-2  flex-col justify-center items-center transition-all opacity-100  ${
-            isHovered
-              ? " translate-x-0"
-              : " translate-y-[130%] translate-x-[130%]  "
-          }`}
+          className="productes relative w-full h-[380px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main transition-all pb-6   hover:shadow-md   "
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <div
-            className={`size-15 p-5 rounded-full flex justify-center items-center cursor-pointer 
+            className={`flex justify-center items-center gap-[5px] mx-auto w-33 px-3 py-1 text-white bg-black/90 rounded-b-md  font-bolder translate-y-[-100%] transition opacity-90 ${
+              isINCart ? "translate-y-[0%]" : ""
+            }`}
+          >
+            <AiOutlineCheck className="text-green-500" />
+            Done
+          </div>
+          <Link
+            to={`/productes/${item.id}`}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            <div className="imageProducts w-full object-cover h-[200px] mb-8 flex justify-center items-cente ">
+              <img
+                className="w-50 h-50  object-center"
+                src={
+                  item.images.find((img) => !!img) ??
+                  "https://placehold.co/600x400"
+                }
+                alt="product"
+              />
+            </div>
+
+            <p className="nameProduct text-md normal  line-clamp-2 px-3">
+              {item.title}
+            </p>
+            <div className="stars flex px-3 text-yellow-500 py-2">
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+              <FaStarHalfAlt />
+            </div>
+            <div className="price px-3 font-bold text-md text-green-600">
+              ${item.price}
+            </div>
+          </Link>
+          <div
+            ref={ShowIcones}
+            className={`icons absolute top-1/4 right-3 flex gap-2  flex-col justify-center items-center transition-all opacity-100  ${
+              isHovered
+                ? " translate-x-0"
+                : " translate-y-[130%] translate-x-[130%]  "
+            }`}
+          >
+            <div
+              className={`size-15 p-5 rounded-full flex justify-center items-center cursor-pointer 
           ${
             ClickedCart || isINCart
               ? "bg-black/90 text-white   "
               : "bg-bg text-main"
           } `}
-            onClick={handleAddToCart}
-          >
-            <GiShoppingCart />
-          </div>
-          <div
-            className={`size-15 p-5 rounded-full flex justify-center items-center  cursor-pointer ${
-              ClickedFav || isINFavorite
-                ? "bg-red-500/90 text-white  "
-                : "bg-bg text-main "
-            }`}
-            onClick={handelFavCart}
-          >
-            <AiOutlineHeart />
-          </div>
-          <div className="size-15 bg-bg p-5 rounded-full flex justify-center items-center text-main cursor-pointer">
-            <FaShare />
+              onClick={handleAddToCart}
+            >
+              <GiShoppingCart />
+            </div>
+            <div
+              className={`size-15 p-5 rounded-full flex justify-center items-center  cursor-pointer ${
+                ClickedFav || isINFavorite
+                  ? "bg-red-500/90 text-white  "
+                  : "bg-bg text-main "
+              }`}
+              onClick={handelFavCart}
+            >
+              <AiOutlineHeart />
+            </div>
+            <div className="size-15 bg-bg p-5 rounded-full flex justify-center items-center text-main cursor-pointer">
+              <FaShare />
+            </div>
           </div>
         </div>
-      </div>
-    </PageTransitions>
-  );
+      </PageTransitions>
+    );
+  }
 }
