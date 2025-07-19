@@ -44,8 +44,8 @@ export default function BtmHeader() {
     </div>;
   } else {
     return (
-      <div className="BtmHeader bg-main text-white text-md   ">
-        <div className="flex flex-col sm:flex-row items-center justify-around py-4 sm:py-0">
+      <div className="BtmHeader bg-main text-white text-md   relative bottom-0 ">
+        <div className="flex flex-col sm:flex-row  items-center justify-around py-4 sm:py-0">
           {/* Ctegories */}
           <div className="categoresNav flex flex-col mb-2 sm:mb-0">
             {/* CategorieBTN */}
@@ -102,9 +102,9 @@ export default function BtmHeader() {
             })}
           </div>
           <div className="signIn_regester hidden sm:flex gap-3">
-            <button className="signIn">
+            <Link to="/userAccounts" className="signIn">
               <FiUserPlus className="size-5" />
-            </button>
+            </Link>
             <button className="regester">
               <FaSignInAlt className="size-5" />
             </button>

@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
 const ContactUs = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  });
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -48,10 +45,15 @@ const ContactUs = () => {
         </p>
         <ul className="space-y-4 text-gray-600">
           <li>
-            <strong>Email:</strong> support@ourstore.com
+            <strong>Email:</strong>{" "}
+            <a href="mailto:Eng.Abood.mushtaha@gmail.com">
+              {" "}
+              Eng.Abood.mushtaha@gmail.com
+            </a>
           </li>
           <li>
-            <strong>Phone:</strong> +1 234 567 890
+            <strong>Phone:</strong>{" "}
+            <a href="tel:20 155 279 8956"> tel: 20 155 279 8956</a>
           </li>
           <li>
             <strong>Address:</strong> 123 Commerce St, Shopville, USA

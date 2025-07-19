@@ -65,6 +65,7 @@ export default function Productes({ item }) {
 
   const ShowIcones = useRef();
   const [isHovered, setIsHovered] = useState(false);
+  // console.log(item);
 
   if (!item) {
     <div className="w-screen h-screen flex items-center justify-center">
@@ -81,7 +82,7 @@ export default function Productes({ item }) {
     return (
       <PageTransitions>
         <div
-          className="productes relative w-full h-[380px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main transition-all pb-6   hover:shadow-md   "
+          className="productes relative w-full h-[388px] flex flex-col mt-3 border-2 border-border    rounded-xl overflow-hidden hover:border-main transition-all pb-6   hover:shadow-md   "
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -93,10 +94,7 @@ export default function Productes({ item }) {
             <AiOutlineCheck className="text-green-500" />
             Done
           </div>
-          <Link
-            to={`/productes/${item.id}`}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
+          <Link to={`/productes/${item.id}`}>
             <div className="imageProducts w-full object-cover h-[200px] mb-8 flex justify-center items-cente ">
               <img
                 className="w-50 h-50  object-center"
@@ -111,15 +109,18 @@ export default function Productes({ item }) {
             <p className="nameProduct text-md normal  line-clamp-2 px-3">
               {item.title}
             </p>
-            <div className="stars flex px-3 text-yellow-500 py-2">
+            <div className="stars flex px-3 text-yellow-500 py-1">
               <AiFillStar />
               <AiFillStar />
               <AiFillStar />
               <AiFillStar />
               <FaStarHalfAlt />
             </div>
-            <div className="price px-3 font-bold text-md text-green-600">
+            <div className="price px-3 font-bold text-md text-green-600 flex flex-row justify-start items-start gap-5 py-2 ">
               ${item.price}
+              <del className="text-xs text-red-400 mb-4 pb-3">
+                {item.discountPercentage} %
+              </del>
             </div>
           </Link>
           <div

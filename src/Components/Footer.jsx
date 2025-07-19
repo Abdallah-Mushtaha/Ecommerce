@@ -71,9 +71,15 @@ const Footer = () => {
       .catch((error) => console.log(error));
   }, []);
   console.log(categories);
-
+  const Linkes = [
+    { title: "Home", link: "/" },
+    { title: "About", link: "/about" },
+    { title: "Acsessories", link: "/Acsessories" },
+    { title: "Blogs", link: "/blog" },
+    { title: "Contact", link: "/contact" },
+  ];
   return (
-    <footer className="bg-gray-200 p-8 text-gray-700 py-[50px]">
+    <footer className="bg-gray-200 p-8 text-gray-700 py-[50px] mt-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Contact Information */}
         <div className="space-y-2">
@@ -93,8 +99,8 @@ const Footer = () => {
           </Link>
           <div className="space-y-1">
             <p>Customer Supports:</p>
-            <a href="tel:(629) 555-0129" className="font-medium">
-              (629) 555-0129
+            <a href="tel: 20 155 279 8956" className="font-medium">
+              tel: 20 155 279 8956
             </a>
           </div>
           <address className="not-italic">
@@ -103,46 +109,59 @@ const Footer = () => {
             Manchester, Kentucky 39495
           </address>
           {/* Email */}
-          <a href="email:Example@gmail.com">Example@gmail.com</a>
+          <a href="mailto: Eng.Abood.mushtaha@gmail.com">
+            {" "}
+            Eng.Abood.mushtaha@gmail.com
+          </a>
         </div>
 
         {/* Top Category */}
         <div>
           <h3 className="text-lg font-semibold mb-4">TOP CATEGORY</h3>
           <div className="grid grid-cols-2 gap-2">
-            {categories.map((category) => (
-              <Link
-                to={`/category/${category.slug}`}
-                key={category}
-                className="flex flex-col"
-              >
-                {/* Display full category name but in two columns layout */}
-                <span className="text-sm truncate" title={category.slug}>
-                  {category.slug}
-                </span>
-              </Link>
-            ))}
+            {categories ? (
+              categories.map((category) => (
+                <Link
+                  to={`/category/${category.slug}`}
+                  key={category.slug}
+                  className="flex flex-col"
+                >
+                  {/* Display full category name but in two columns layout */}
+                  <span className="text-sm truncate" title={category.slug}>
+                    {category.slug}
+                  </span>
+                </Link>
+              ))
+            ) : (
+              <div class="relative flex w-64 animate-pulse gap-2 p-4 bg-gray-300">
+                <div class="flex-1">
+                  <div class="mb-1 h-5 w-3/5 rounded-lg bg-main text-gray-600 text-lg"></div>
+                  <div class="h-5 w-[90%] rounded-lg bg-main text-sm"></div>
+                </div>
+                <div class="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-main"></div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Quick Links */}
         <div>
           <h3 className="text-lg font-semibold mb-4">QUICK LINKS</h3>
-          <ul className="space-y-2">
-            {[
-              "Shop Product",
-              "Shaping Cart",
-              "Wishlist",
-              "Compare",
-              "Track Order",
-              "Customer Help",
-              "About Us",
-            ].map((item) => (
-              <Link to={`/${item}`} key={item} className="flex flex-col ">
-                {item}
-              </Link>
-            ))}
-          </ul>
+          {/* Nav Linkes */}
+          <div className="navLinkes flex flex-col gap-0  sm:gap-0  ">
+            {Linkes.map((link, index) => {
+              return (
+                <Link
+                  to={link.link}
+                  key={Linkes + index}
+                  className={` hover:cursor-pointer gap-[0.1rem] sm:p-[0.5rem] px-[0.2rem]  
+       `}
+                >
+                  <p className="text-sm">{link.title}</p>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {/* Download App & Tags */}
@@ -158,6 +177,7 @@ const Footer = () => {
                       : "https://www.apple.com/app-store/"
                   }
                   key={btn.label}
+                  target="_blank"
                   className={`flex justify-center items-center gap-4 bg-black text-white px-3 py-2 rounded ${btn.className}`}
                 >
                   {btn.icon} {btn.label}{" "}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Productes from "../Components/sideProductes/Productes";
-import { useLocation } from "react-router-dom";
 
 const Accessories = () => {
   const [accessories, setAccessories] = useState([]);
@@ -12,10 +11,7 @@ const Accessories = () => {
     "womens-jewellery",
     "sunglasses",
   ];
-  const path = useLocation();
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [path]);
+
   useEffect(() => {
     const fetchAccessories = async () => {
       try {

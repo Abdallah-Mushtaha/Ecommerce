@@ -80,7 +80,7 @@ export default function SearchBox() {
         </button>
       </form>
       {sugistions.length > 0 ? (
-        <ul className="sugistions bg-gray-100 p-5 rounded-lg w-[20rem] sm:w-[42rem] transition-all flex flex-col justify-center items-center shadow-lg absolute top-[80%] z-0 ">
+        <ul className="sugistions bg-gray-100 p-5 rounded-lg w-[20rem] sm:w-[42rem] transition-all flex flex-col justify-center items-center shadow-lg absolute top-[80%] z-[3] ">
           {sugistions.map((item) => {
             return (
               <li

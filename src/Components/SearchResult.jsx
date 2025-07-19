@@ -9,11 +9,7 @@ export default function SearchResult() {
 
   const [SearchResult, setSearchResult] = useState([]);
   const [Loading, setLoading] = useState(true);
-  const path = useLocation();
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [path]);
   useEffect(() => {
     const fetchResult = async () => {
       try {

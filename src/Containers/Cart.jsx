@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { CartContext } from "../Components/context/cartContext";
 import { MdDelete } from "react-icons/md";
 export default function Cart() {
@@ -7,10 +7,6 @@ export default function Cart() {
   const { cartItems, increseQuantity, removeCartItem, decreseQuantity } =
     useContext(CartContext);
   console.log(cartItems);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <div
