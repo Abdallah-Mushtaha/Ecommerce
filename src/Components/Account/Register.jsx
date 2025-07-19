@@ -46,7 +46,7 @@ export default function Register({ switchToLogin }) {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-main transition"
         >
           Register
         </button>
@@ -54,7 +54,7 @@ export default function Register({ switchToLogin }) {
 
       <p className="text-center text-sm text-gray-500 mt-6">
         Already have an account?{" "}
-        <a onClick={switchToLogin} className="text-blue-600 hover:underline">
+        <a onClick={switchToLogin} className="text-main hover:underline">
           Login
         </a>
       </p>

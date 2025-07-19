@@ -35,7 +35,7 @@ export default function Login({ switchToRegister }) {
           <input
             type="password"
             placeholder="••••••••"
-            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           />
         </div>
@@ -43,7 +43,7 @@ export default function Login({ switchToRegister }) {
         <div className="text-right">
           <button
             type="button"
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-gray-600 hover:underline"
             onClick={() => {
               navigate("/ForgetPassword");
             }}
@@ -54,7 +54,7 @@ export default function Login({ switchToRegister }) {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-main transition"
         >
           Sign In
         </button>
@@ -62,7 +62,7 @@ export default function Login({ switchToRegister }) {
 
       <p className="text-center text-sm text-gray-500 mt-6">
         Don’t have an account?{" "}
-        <a onClick={switchToRegister} className="text-blue-600 hover:underline">
+        <a onClick={switchToRegister} className="text-main hover:underline">
           Register now
         </a>
       </p>

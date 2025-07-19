@@ -14,7 +14,7 @@ export default function ConficLogin() {
             onClick={() => setActiveTab("login")}
             className={`w-1/2 text-center py-3 font-semibold text-sm transition ${
               activeTab === "login"
-                ? "bg-blue-600 text-white"
+                ? "bg-main text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
@@ -27,7 +27,7 @@ export default function ConficLogin() {
             onClick={() => setActiveTab("register")}
             className={`w-1/2 text-center py-3 font-semibold text-sm transition ${
               activeTab === "register"
-                ? "bg-blue-600 text-white"
+                ? "bg-main  text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
