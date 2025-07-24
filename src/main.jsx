@@ -1,7 +1,6 @@
-// import { createRoot } from "react-dom/client";
 import React from "react";
-import App from "./App.jsx";
 import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import ProductesDitales from "./Containers/ProductesDitales.jsx";
@@ -24,140 +23,140 @@ import Register from "./Components/Account/Register.jsx";
 import Login from "./Components/Account/Login.jsx";
 import ForgetPassword from "./Components/Account/ForgetPassword.jsx";
 
+// ✅ استيراد AuthProvider
+import { AuthProvider } from "./Components/Account/Auth.jsx"; // تأكد من المسار الصحيح
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CartProvider>
-      <BrowserRouter>
-        <Toaster position="bottom-right" reverseOrder={false} />
-        {/* cover the pages with animation page loking load */}
-        <AnimatePresence mode="wait">
-          <ScrollPages>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route
-                  index
-                  element={
-                    <ProtectedRoute>
-                      <App />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/about"
-                  element={
-                    <ProtectedRoute>
-                      <AboutSection />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/userAccounts"
-                  element={
-                    <ProtectedRoute>
-                      <UserAccount />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route
-                  path="/ForgetPassword"
-                  element={
-                    <ProtectedRoute>
-                      <ForgetPassword />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/register"
-                  element={
-                    <ProtectedRoute>
-                      <Register />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/login"
-                  element={
-                    <ProtectedRoute>
-                      <Login />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/contact"
-                  element={
-                    <ProtectedRoute>
-                      <ContactUs />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/Acsessories"
-                  element={
-                    <ProtectedRoute>
-                      <AccessoriesPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/blog"
-                  element={
-                    <ProtectedRoute>
-                      <BlogPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/cart"
-                  element={
-                    <ProtectedRoute>
-                      <Cart />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/search"
-                  element={
-                    <ProtectedRoute>
-                      {" "}
-                      <SearchResult />{" "}
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/favorites"
-                  element={
-                    <ProtectedRoute>
-                      {" "}
-                      <Favorites />{" "}
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/category/:category"
-                  element={
-                    <ProtectedRoute>
-                      {" "}
-                      <CategoryPage />{" "}
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="productes/:id"
-                  element={
-                    <ProtectedRoute>
-                      {" "}
-                      <ProductesDitales />{" "}
-                    </ProtectedRoute>
-                  }
-                />
-                {/* Catch any other route and redirect to "/" or stay in place */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Route>
-            </Routes>
-          </ScrollPages>
-        </AnimatePresence>
-      </BrowserRouter>
-    </CartProvider>
+    <AuthProvider>
+      {" "}
+      {/* ✅ لف كل شيء داخل AuthProvider */}
+      <CartProvider>
+        <BrowserRouter>
+          <Toaster position="bottom-right" reverseOrder={false} />
+          <AnimatePresence mode="wait">
+            <ScrollPages>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route
+                    index
+                    element={
+                      <ProtectedRoute>
+                        <App />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/about"
+                    element={
+                      <ProtectedRoute>
+                        <AboutSection />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/userAccounts"
+                    element={
+                      <ProtectedRoute>
+                        <UserAccount />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/ForgetPassword"
+                    element={
+                      <ProtectedRoute>
+                        <ForgetPassword />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <ProtectedRoute>
+                        <Register />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      <ProtectedRoute>
+                        <Login />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/contact"
+                    element={
+                      <ProtectedRoute>
+                        <ContactUs />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/Acsessories"
+                    element={
+                      <ProtectedRoute>
+                        <AccessoriesPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/blog"
+                    element={
+                      <ProtectedRoute>
+                        <BlogPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/cart"
+                    element={
+                      <ProtectedRoute>
+                        <Cart />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/search"
+                    element={
+                      <ProtectedRoute>
+                        <SearchResult />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/favorites"
+                    element={
+                      <ProtectedRoute>
+                        <Favorites />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/category/:category"
+                    element={
+                      <ProtectedRoute>
+                        <CategoryPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="productes/:id"
+                    element={
+                      <ProtectedRoute>
+                        <ProductesDitales />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Route>
+              </Routes>
+            </ScrollPages>
+          </AnimatePresence>
+        </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
