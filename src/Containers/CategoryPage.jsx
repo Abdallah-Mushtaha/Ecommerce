@@ -28,7 +28,7 @@ export default function CategoryPage() {
   return (
     <PageTransitions>
       <div
-        className="cart mt-40 sm:mt-52 
+        className="cart mt-48 sm:mt-52 
       mx-auto  py-5 container rounded-md  mb-10 "
       >
         {/* top slide header */}

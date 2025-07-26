@@ -51,8 +51,8 @@ export default function UserAccount() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 mt-40 py-5">
-      <div className="bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-48 mb-20">
+      <div className="bg-white shadow-xl rounded-2xl p-6 sm:p-10 border border-gray-100">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-center gap-6 border-b pb-6">
           <img
@@ -60,15 +60,17 @@ export default function UserAccount() {
             alt="User Avatar"
             className="w-24 h-24 rounded-full border-4 border-gray-300 shadow-md"
           />
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">{email}</h2>
+          <div className="text-center sm:text-left">
+            <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
+              {email}
+            </h2>
             <p className="text-gray-500">Logged in user</p>
           </div>
         </div>
 
         {/* Tabs */}
         <div className="mt-6 border-b">
-          <nav className="flex gap-6 text-sm font-semibold text-gray-600">
+          <nav className="flex flex-wrap gap-6 text-sm font-semibold text-gray-600">
             {["profile", "orders", "password"].map((type) => (
               <button
                 key={type}

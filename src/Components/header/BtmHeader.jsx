@@ -1,11 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FiUserPlus } from "react-icons/fi";
 import { FaSignInAlt } from "react-icons/fa";
+import Authcontext from "../Account/Auth";
+import toast from "react-hot-toast";
 
 export default function BtmHeader() {
+  const { logout } = useContext(Authcontext);
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully");
+    Navigate("/userAccounts");
+  };
+
   // Also we can hide the categoriesNavList using CSS by clip-path
   const categoresNavList = useRef();
   const currentLocation = useLocation();
@@ -45,45 +54,57 @@ export default function BtmHeader() {
   } else {
     return (
       <div className="BtmHeader bg-main text-white text-md   relative bottom-0 ">
-        <div className="flex flex-col sm:flex-row  items-center justify-around py-4 sm:py-0">
-          {/* Ctegories */}
-          <div className="categoresNav flex flex-col mb-2 sm:mb-0">
-            {/* CategorieBTN */}
-            <button
-              className="categoriesBtn flex items-center gap-2 relative"
-              onClick={() => {
-                // IF clicked show categoriesNavList else hide
-                categoresNavList.current.classList.toggle("hidden");
-              }}
-            >
-              <FiMenu />
-              <p>Categories</p>
-              <IoMdArrowDropdown />
-            </button>
-            {/* Catiegorie Nav list comes from api */}
-            <div
-              ref={categoresNavList}
-              className="categoresNavList absolute top-[10rem]   flex-col gap-2 max-h-[12rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10   "
-            >
-              {categories.map((category, index) => {
-                return (
-                  <Link
-                    to={`/category/${category.slug}`}
-                    key={categories + index}
-                  >
-                    <p
-                      className=" border-b-2 border-gray-200 p-2 hover:bg-main hover:text-white "
-                      onClick={() => {
-                        categoresNavList.current.classList.add("hidden");
-                      }}
+        <div className="flex flex-col sm:flex-row  items-center justify-around py-5 sm:py-0">
+          {/* flex in mobile  */}
+          <div className="flex justify-between items-center gap-5">
+            {/* Ctegories */}
+            <div className="categoresNav flex flex-col mb-2 sm:mb-0">
+              {/* CategorieBTN */}
+              <button
+                className="categoriesBtn flex items-center gap-2 relative"
+                onClick={() => {
+                  // IF clicked show categoriesNavList else hide
+                  categoresNavList.current.classList.toggle("hidden");
+                }}
+              >
+                <FiMenu />
+                <p>Categories</p>
+                <IoMdArrowDropdown />
+              </button>
+              {/* Catiegorie Nav list comes from api */}
+              <div
+                ref={categoresNavList}
+                className="categoresNavList absolute top-[3rem]   flex-col gap-2 max-h-[12rem] overflow-y-scroll bg-gray-100 p-2 hidden text-black z-10   "
+              >
+                {categories.map((category, index) => {
+                  return (
+                    <Link
+                      to={`/category/${category.slug}`}
+                      key={categories + index}
                     >
-                      {category.name}
-                    </p>
-                  </Link>
-                );
-              })}
+                      <p
+                        className=" border-b-2 border-gray-200 p-2 hover:bg-main hover:text-white "
+                        onClick={() => {
+                          categoresNavList.current.classList.add("hidden");
+                        }}
+                      >
+                        {category.name}
+                      </p>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="signIn_regester flex  sm:hidden gap-3 ">
+              <Link to="/userAccounts" className="signIn">
+                <FiUserPlus className="size-5" />
+              </Link>
+              <button className="regester" onClick={handleLogout}>
+                <FaSignInAlt className="size-5" />
+              </button>
             </div>
           </div>
+
           {/* Nav Linkes */}
           <div className="navLinkes flex gap-0  sm:gap-0  ">
             {Linkes.map((link, index) => {
@@ -101,11 +122,11 @@ export default function BtmHeader() {
               );
             })}
           </div>
-          <div className="signIn_regester hidden sm:flex gap-3">
+          <div className="signIn_regester  sm:flex gap-3 hidden">
             <Link to="/userAccounts" className="signIn">
               <FiUserPlus className="size-5" />
             </Link>
-            <button className="regester">
+            <button className="regester" onClick={handleLogout}>
               <FaSignInAlt className="size-5" />
             </button>
           </div>

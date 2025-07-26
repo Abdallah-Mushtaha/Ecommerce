@@ -1,56 +1,103 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { fakeUpdatePassword } from "../Account/api";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function ForgetPassword() {
+  const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleEmailSubmit = (e) => {
     e.preventDefault();
-    console.log("Sending code to:", email);
-    // TODO: Send API call here
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const exists = users.find((u) => u.email === email);
+    if (!exists) {
+      toast.error("Email not found!");
+      return;
+    }
+    setStep(2); // Move to reset password step
+  };
+
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    if (newPass !== confirmPass) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    const success = fakeUpdatePassword(email, newPass);
+    if (success) {
+      toast.success("Password reset successfully");
+      navigate("/login");
+    } else {
+      toast.error("Something went wrong");
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  px-4 mt-24">
+    <div className="min-h-screen flex items-center justify-center px-4 mt-24">
       <div className="w-full max-w-md bg-gray-100 p-8 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold text-center mb-2">
-          Forget Password
-        </h2>
-        <p className="text-sm text-gray-600 text-center mb-6">
-          Enter the email address or mobile phone number associated with your
-          Clicon account.
-        </p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="example@domain.com"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md font-semibold flex items-center justify-center hover:bg-blue-600 transition"
-          >
-            SEND CODE <span className="ml-2">→</span>
-          </button>
-        </form>
+        {step === 1 && (
+          <>
+            <h2 className="text-lg font-semibold text-center mb-2">
+              Forgot Password
+            </h2>
+            <p className="text-sm text-gray-600 text-center mb-6">
+              Enter your email address to reset your password.
+            </p>
+            <form onSubmit={handleEmailSubmit} className="space-y-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md outline-none focus:outline-none "
+                placeholder="example@domain.com"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full bg-gray-500 text-white py-2 rounded-md font-semibold hover:bg-black transition-all"
+              >
+                Continue
+              </button>
+            </form>
+          </>
+        )}
 
-        <hr className="my-4" />
-
-        <p className="text-xs text-center text-gray-500">
-          You may contact{" "}
-          <a href="#" className="text-black hover:underline">
-            Customer Service
-          </a>{" "}
-          for help restoring access to your account.
-        </p>
+        {step === 2 && (
+          <>
+            <h2 className="text-lg font-semibold text-center mb-4">
+              Reset Your Password
+            </h2>
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <input
+                type="password"
+                placeholder="New password"
+                value={newPass}
+                onChange={(e) => setNewPass(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md outline-none focus:outline-none "
+                required
+              />
+              <input
+                type="password"
+                placeholder="Confirm new password"
+                value={confirmPass}
+                onChange={(e) => setConfirmPass(e.target.value)}
+                className="w-full px-4 py-2 outline-none focus:outline-none border rounded-md  "
+                required
+              />
+              <button
+                type="submit"
+                className="w-full bg-gray-600 text-white py-2 rounded-md font-semibold hover:bg-black transition-all"
+              >
+                Reset Password
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );

@@ -39,7 +39,7 @@ export default function Productes({ item }) {
       );
     }
 
-    console.log(favoriteItems);
+    // console.log(favoriteItems);
   };
 
   //   Cart Items

@@ -45,7 +45,7 @@ export default function Login({ switchToRegister }) {
           <input
             type="email"
             placeholder="you@example.com"
-            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-1 w-full px-4 py-2  outline-none  border rounded-lg focus:outline-none"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -59,7 +59,7 @@ export default function Login({ switchToRegister }) {
           <input
             type="password"
             placeholder="••••••••"
-            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none outline-none "
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
