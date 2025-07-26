@@ -23,14 +23,13 @@ import Register from "./Components/Account/Register.jsx";
 import Login from "./Components/Account/Login.jsx";
 import ForgetPassword from "./Components/Account/ForgetPassword.jsx";
 
-// ✅ استيراد AuthProvider
-import { AuthProvider } from "./Components/Account/Auth.jsx"; // تأكد من المسار الصحيح
+import { AuthProvider } from "./Components/Account/Auth.jsx"; //
+import ConficLogin from "./Components/Account/ConficLogin.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
       {" "}
-      {/* ✅ لف كل شيء داخل AuthProvider */}
       <CartProvider>
         <BrowserRouter>
           <Toaster position="bottom-right" reverseOrder={false} />
@@ -62,30 +61,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                       </ProtectedRoute>
                     }
                   />
-                  <Route
-                    path="/ForgetPassword"
-                    element={
-                      <ProtectedRoute>
-                        <ForgetPassword />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/register"
-                    element={
-                      <ProtectedRoute>
-                        <Register />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/login"
-                    element={
-                      <ProtectedRoute>
-                        <Login />
-                      </ProtectedRoute>
-                    }
-                  />
+                  <Route path="/ForgetPassword" element={<ForgetPassword />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<ConficLogin />} />
                   <Route
                     path="/contact"
                     element={

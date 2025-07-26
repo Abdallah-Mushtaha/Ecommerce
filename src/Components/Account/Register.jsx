@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "./Auth";
+import AuthContext from "../Account/Auth";
 import { fakeRegister } from "./api";
 
 export default function Register({ switchToLogin }) {
@@ -11,95 +11,82 @@ export default function Register({ switchToLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
-    setIsLoading(true);
 
     try {
-      const res = await fakeRegister({ email, password, fullName });
+      const res = await fakeRegister({ email, password });
       login(res);
       navigate("/");
     } catch (err) {
       setError(err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-auto max-w-md bg-white p-8 rounded-xl shadow-md">
+    <div className="w-auto max-w-md bg-white p-8 rounded-xl">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
         Create an Account 🚀
       </h2>
 
-      {error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
-          {error}
-        </div>
-      )}
+      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
       <form className="space-y-4" onSubmit={handleRegister}>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-start text-gray-700">
             Full Name
           </label>
           <input
             type="text"
             placeholder="John Doe"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
+            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm text-start font-medium text-gray-700">
             Email Address
           </label>
           <input
             type="email"
             placeholder="you@example.com"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm text-start font-medium text-gray-700">
             Password
           </label>
           <input
             type="password"
             placeholder="••••••••"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
-            minLength={6}
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-          disabled={isLoading}
+          className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-main transition"
         >
-          {isLoading ? "Creating Account..." : "Register"}
+          Register
         </button>
       </form>
 
       <p className="text-center text-sm text-gray-500 mt-6">
         Already have an account?{" "}
-        <button
-          onClick={switchToLogin}
-          className="text-blue-600 hover:underline font-medium"
-        >
+        <button onClick={switchToLogin} className="text-main hover:underline">
           Login
         </button>
       </p>

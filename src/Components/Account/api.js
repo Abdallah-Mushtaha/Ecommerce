@@ -1,76 +1,56 @@
-const initialUsers = [
-    {
-        email: "admin@gmail.com",
-        password: "123456",
-        role: "admin",
-        fullName: "Admin User"
-    },
-    {
-        email: "user@gmail.com",
-        password: "123456",
-        role: "user",
-        fullName: "Regular User"
-    },
-];
+// fakeAPI.js
 
-// Initialize users in localStorage if empty
-if (!localStorage.getItem("users")) {
-    localStorage.setItem("users", JSON.stringify(initialUsers));
-}
-
-export default function fakeApi({ email, password }) {
+export async function fakeRegister({ email, password }) {
     return new Promise((resolve, reject) => {
-        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const fakeDB = JSON.parse(localStorage.getItem("users")) || [];
 
-        setTimeout(() => {
-            const user = users.find(
-                (user) => user.email === email && user.password === password
-            );
+        const exists = fakeDB.find((user) => user.email === email);
+        if (exists) {
+            return reject("Email already exists");
+        }
 
-            if (user) {
-                resolve({
-                    token: `fake-jwt-token-${user.role}`,
-                    role: user.role,
-                    user: {
-                        email: user.email,
-                        fullName: user.fullName
-                    }
-                });
-            } else {
-                reject("Invalid email or password");
-            }
-        }, 1000);
+        const newUser = { email, password };
+        fakeDB.push(newUser);
+        localStorage.setItem("users", JSON.stringify(fakeDB));
+
+        const token = btoa(JSON.stringify({ email }));
+        resolve({ token, user: newUser });
     });
 }
 
-export const fakeRegister = ({ email, password, fullName }) => {
+export default async function fakeApi({ email, password }) {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const users = JSON.parse(localStorage.getItem("users")) || [];
-            const userExists = users.find((user) => user.email === email);
+        const fakeDB = JSON.parse(localStorage.getItem("users")) || [];
 
-            if (userExists) {
-                reject("Email already exists");
-            } else {
-                const newUser = {
-                    email,
-                    password,
-                    fullName,
-                    role: "user",
-                };
+        const user = fakeDB.find(
+            (user) => user.email === email && user.password === password
+        );
+        if (!user) {
+            return reject("Invalid email or password");
+        }
 
-                users.push(newUser);
-                localStorage.setItem("users", JSON.stringify(users));
-
-                resolve({
-                    token: `fake-jwt-token-user`,
-                    role: "user",
-                    user: {
-                        email,
-                        fullName
-                    }
-                });
-            }
-        }, 1000);
+        const token = btoa(JSON.stringify({ email }));
+        resolve({ token, user });
     });
-};
+}
+
+export function fakeVerifyToken(token) {
+    try {
+        const data = JSON.parse(atob(token));
+        return data?.email ? data : null;
+    } catch (err) {
+        console.log("Token verification failed:", err);
+        return null;
+    }
+}
+
+export function fakeUpdatePassword(email, newPassword) {
+    const fakeDB = JSON.parse(localStorage.getItem("users")) || [];
+
+    const userIndex = fakeDB.findIndex((user) => user.email === email);
+    if (userIndex === -1) return false;
+
+    fakeDB[userIndex].password = newPassword;
+    localStorage.setItem("users", JSON.stringify(fakeDB));
+    return true;
+}

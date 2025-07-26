@@ -1,43 +1,44 @@
 import { createContext, useEffect, useState } from "react";
+import { fakeVerifyToken } from "./api";
 
-const AuthContext = createContext();
+const Authcontext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(() => {
-    const storedAuth = localStorage.getItem("auth");
-    return storedAuth ? JSON.parse(storedAuth) : null;
-  });
-
-  const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem("auth");
-    if (storedAuth) {
-      setAuth(JSON.parse(storedAuth));
+    const stored = localStorage.getItem("auth");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      const valid = fakeVerifyToken(parsed.token);
+      if (valid) setAuth(parsed);
     }
-    setLoading(false);
   }, []);
 
   const login = (data) => {
-    const authData = {
-      token: data.token,
-      role: data.role,
-      user: data.user, // إضافة بيانات المستخدم
-    };
-    setAuth(authData);
-    localStorage.setItem("auth", JSON.stringify(authData));
+    localStorage.setItem("auth", JSON.stringify(data));
+    setAuth(data);
   };
 
   const logout = () => {
-    setAuth(null);
     localStorage.removeItem("auth");
+    setAuth(null);
+  };
+  const updatePassword = (newPassword) => {
+    if (!auth?.user?.email) return false;
+    const updated = {
+      ...auth,
+      user: { ...auth.user, password: newPassword },
+    };
+    localStorage.setItem("auth", JSON.stringify(updated));
+    setAuth(updated);
   };
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout, loading }}>
+    <Authcontext.Provider value={{ auth, login, logout, updatePassword }}>
       {children}
-    </AuthContext.Provider>
+    </Authcontext.Provider>
   );
 };
 
-export default AuthContext;
+export default Authcontext;
