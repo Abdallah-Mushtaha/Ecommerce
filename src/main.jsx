@@ -20,7 +20,7 @@ import AccessoriesPage from "./Containers/Accessories.jsx";
 import ScrollPages from "./Components/sideProductes/ScrollPages.jsx";
 import UserAccount from "./Containers/userAccount.jsx";
 import Register from "./Components/Account/Register.jsx";
-import Login from "./Components/Account/Login.jsx";
+import Login from "./Components/Account/login.jsx";
 import ForgetPassword from "./Components/Account/ForgetPassword.jsx";
 
 import { AuthProvider } from "./Components/Account/Auth.jsx"; //
