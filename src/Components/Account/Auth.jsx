@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
-  if (loading) return null; // أو Spinner مؤقت
+  if (loading) return null;
 
   return (
     <Authcontext.Provider value={{ auth, login, logout, updatePassword }}>

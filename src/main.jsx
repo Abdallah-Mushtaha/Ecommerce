@@ -23,13 +23,13 @@ import Register from "./Components/Account/Register.jsx";
 import Login from "./Components/Account/login.jsx";
 import ForgetPassword from "./Components/Account/ForgetPassword.jsx";
 
-import { AuthProvider } from "./Components/Account/Auth.jsx"; //
+import { AuthProvider } from "./Components/Account/Auth.jsx";
 import ConficLogin from "./Components/Account/ConficLogin.jsx";
+import PostLogin from "./Components/PostLogin.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      {" "}
       <CartProvider>
         <BrowserRouter>
           <Toaster position="bottom-right" reverseOrder={false} />
@@ -37,70 +37,24 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <ScrollPages>
               <Routes>
                 <Route path="/" element={<Layout />}>
+                  <Route index element={<App />} />
+                  <Route path="/about" element={<AboutSection />} />
+                  <Route path="/contact" element={<ContactUs />} />
+                  <Route path="/Acsessories" element={<AccessoriesPage />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/search" element={<SearchResult />} />
                   <Route
-                    index
-                    element={
-                      <ProtectedRoute>
-                        <App />
-                      </ProtectedRoute>
-                    }
+                    path="/category/:category"
+                    element={<CategoryPage />}
                   />
-                  <Route
-                    path="/about"
-                    element={
-                      <ProtectedRoute>
-                        <AboutSection />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/userAccounts"
-                    element={
-                      <ProtectedRoute>
-                        <UserAccount />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route path="/ForgetPassword" element={<ForgetPassword />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<ConficLogin />} />
-                  <Route
-                    path="/contact"
-                    element={
-                      <ProtectedRoute>
-                        <ContactUs />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/Acsessories"
-                    element={
-                      <ProtectedRoute>
-                        <AccessoriesPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/blog"
-                    element={
-                      <ProtectedRoute>
-                        <BlogPage />
-                      </ProtectedRoute>
-                    }
-                  />
+                  <Route path="/productes/:id" element={<ProductesDitales />} />
+
+                  {/* Pages that require authentication */}
                   <Route
                     path="/cart"
                     element={
                       <ProtectedRoute>
                         <Cart />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/search"
-                    element={
-                      <ProtectedRoute>
-                        <SearchResult />
                       </ProtectedRoute>
                     }
                   />
@@ -113,21 +67,21 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     }
                   />
                   <Route
-                    path="/category/:category"
+                    path="/userAccounts"
                     element={
                       <ProtectedRoute>
-                        <CategoryPage />
+                        <UserAccount />
                       </ProtectedRoute>
                     }
                   />
-                  <Route
-                    path="productes/:id"
-                    element={
-                      <ProtectedRoute>
-                        <ProductesDitales />
-                      </ProtectedRoute>
-                    }
-                  />
+                  <Route path="/post-login" element={<PostLogin />} />
+
+                  {/* Auth pages */}
+                  <Route path="/ForgetPassword" element={<ForgetPassword />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<ConficLogin />} />
+
+                  {/* fallback */}
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Route>
               </Routes>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Authcontext from "../Account/Auth";
+import toast from "react-hot-toast";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext();
@@ -41,9 +42,15 @@ export default function CartProvider({ children }) {
       `favoriteItems_${UserEmail}`,
       JSON.stringify(favoriteItems)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteItems]);
 
   const addFavoriteItem = (item) => {
+    if (!auth) {
+      toast.error("Please Login First");
+      return false;
+    }
+
     //  will check if the item is already in the favoriteItems or not
     const isItemInFavorite = favoriteItems.some(
       (favoriteItem) => favoriteItem.id === item.id
@@ -51,6 +58,7 @@ export default function CartProvider({ children }) {
     if (!isItemInFavorite) {
       setFavoriteItems((prevItems) => [...prevItems, item]);
     }
+    return true;
   };
 
   const removeFavoriteItem = (id) => {
@@ -64,10 +72,12 @@ export default function CartProvider({ children }) {
     const storedCartItems = localStorage.getItem(`cartItems_${UserEmail}`);
     return storedCartItems ? JSON.parse(storedCartItems) : [];
   });
+
   // will use useEffect to update the localStorage built apove any changes
   useEffect(() => {
     //    save in local storage the cartItems how add to cart using addCartItem Function
     localStorage.setItem(`cartItems_${UserEmail}`, JSON.stringify(cartItems));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems]);
 
   // Increse the quantity of the item  if the id item equal to the id of the item passed to the function will increse the quantity
@@ -81,6 +91,7 @@ export default function CartProvider({ children }) {
       })
     );
   };
+
   // Decrease the quantity of the item  if the id item equal to the id of the item passed to the function will decrese the quantity
   const decreseQuantity = (id) => {
     setCartItems((prevItems) =>
@@ -98,7 +109,12 @@ export default function CartProvider({ children }) {
   };
 
   const addCartItem = (item) => {
+    if (!auth) {
+      toast.error("Please Login First");
+      return false;
+    }
     setCartItems((prevItems) => [...prevItems, { ...item, quantity: 1 }]);
+    return true;
   };
 
   return (

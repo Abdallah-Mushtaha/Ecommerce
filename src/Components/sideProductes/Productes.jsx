@@ -3,7 +3,7 @@ import { AiFillStar, AiOutlineHeart } from "react-icons/ai";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { GiShoppingCart } from "react-icons/gi";
 import { FaShare } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/cartContext";
 import { AiOutlineCheck } from "react-icons/ai";
 import toast from "react-hot-toast";
@@ -21,6 +21,8 @@ export default function Productes({ item }) {
     favoriteItems,
   } = useContext(CartContext);
 
+  const navigate = useNavigate();
+
   const [ClickedFav, setClickedFav] = useState(false);
 
   const isINFavorite = favoriteItems.some(
@@ -32,7 +34,19 @@ export default function Productes({ item }) {
       removeFavoriteItem(item.id);
       setClickedFav(false);
     } else {
-      addFavoriteItem(item);
+      const result = addFavoriteItem(item);
+      if (!result) {
+        // Store the Previous Action
+        localStorage.setItem(
+          "pendingAction",
+          JSON.stringify({
+            type: "Favorite",
+            item: item,
+          })
+        );
+        navigate("/login");
+        return;
+      }
       setClickedFav(true);
       toast.success(
         <h1 className="text-md font-normal">{item.title}Added To Favorite</h1>
@@ -53,7 +67,20 @@ export default function Productes({ item }) {
       removeCartItem(item.id);
       setClickedCart(false);
     } else {
-      addCartItem(item);
+      const result = addCartItem(item);
+      if (!result) {
+        // Store the Previous Action
+        localStorage.setItem(
+          "pendingAction",
+          JSON.stringify({
+            type: "cart",
+            item: item,
+          })
+        );
+        navigate("/login");
+        return;
+      }
+
       setClickedCart(true);
       toast.success(
         <h1 className="text-md font-normal">{item.title}Added To Cart</h1>

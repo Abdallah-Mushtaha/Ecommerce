@@ -20,8 +20,14 @@ export default function Login({ switchToRegister }) {
       const res = await fakeApi({ email, password });
       login(res);
 
-      const from = location.state?.from?.pathname || "/userAccounts";
-      navigate(from, { replace: true });
+      const hasPendingAction = localStorage.getItem("pendingAction");
+
+      if (hasPendingAction) {
+        navigate("/post-login", { replace: true });
+      } else {
+        const from = location.state?.from?.pathname || "/userAccounts";
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       setError(err);
     }

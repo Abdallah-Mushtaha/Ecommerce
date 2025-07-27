@@ -5,6 +5,7 @@ import { GiShoppingCart } from "react-icons/gi";
 import { AiFillStar } from "react-icons/ai";
 import { CartContext } from "../context/cartContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 // Mobile Prooducts Info rmation
 export default function MobileProductInfo({ items }) {
@@ -17,6 +18,8 @@ export default function MobileProductInfo({ items }) {
     favoriteItems,
   } = useContext(CartContext);
 
+  const navigate = useNavigate();
+
   // Check if the item is already in the cart or not
   const isINCart = cartItems.some((cartitem) => cartitem.id === items.id);
   const [ClickedCart, setClickedCart] = useState(false);
@@ -26,7 +29,19 @@ export default function MobileProductInfo({ items }) {
       removeCartItem(items.id);
       setClickedCart(false);
     } else {
-      addCartItem(items);
+      const result = addCartItem(items);
+      if (!result) {
+        // Store the Previous Action
+        localStorage.setItem(
+          "pendingAction",
+          JSON.stringifY({
+            type: "cart",
+            item: items,
+          })
+        );
+        navigate("/login");
+        return;
+      }
       setClickedCart(true);
       toast.success(
         <h1 className="text-md font-normal">{items.title}Added To Cart</h1>
@@ -44,7 +59,19 @@ export default function MobileProductInfo({ items }) {
       removeFavoriteItem(items.id);
       setClickedFav(false);
     } else {
-      addFavoriteItem(items);
+      const result = addFavoriteItem(items);
+      if (!result) {
+        // Store the Previous Action
+        localStorage.setItem(
+          "pendingAction",
+          JSON.stringify({
+            type: "Favorite",
+            item: items,
+          })
+        );
+        navigate("/login");
+        return;
+      }
       setClickedFav(true);
       toast.success(
         <h1 className="text-md font-normal">{items.title}Added To Favorite</h1>
