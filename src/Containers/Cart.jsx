@@ -1,12 +1,19 @@
 import React, { useContext } from "react";
 import { CartContext } from "../Components/context/cartContext";
 import { MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 export default function Cart() {
+  const navigate = useNavigate();
   //  will get the cart items from the context
   // will check if the cart is empty or not
   const { cartItems, increseQuantity, removeCartItem, decreseQuantity } =
     useContext(CartContext);
   console.log(cartItems);
+
+  const handelPlaceOrder = (e) => {
+    e.preventDefault();
+    navigate("/CheckoutForm");
+  };
 
   return (
     <div
@@ -85,7 +92,10 @@ export default function Cart() {
             </h1>
           </div>
           <div className="mx-6">
-            <button className=" bg-main/80 text-xl font-normal text-white rounded-md flex justify-center items-center  mt-5 w-full hover:bg-main transition-all py-2 mx-auto outline-none focus:outline-none ">
+            <button
+              className=" bg-main/80 text-xl font-normal text-white rounded-md flex justify-center items-center  mt-5 w-full hover:bg-main transition-all py-2 mx-auto outline-none focus:outline-none "
+              onClick={handelPlaceOrder}
+            >
               Place Order
             </button>
           </div>

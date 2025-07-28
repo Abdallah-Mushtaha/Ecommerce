@@ -26,6 +26,10 @@ import ForgetPassword from "./Components/Account/ForgetPassword.jsx";
 import { AuthProvider } from "./Components/Account/Auth.jsx";
 import ConficLogin from "./Components/Account/ConficLogin.jsx";
 import PostLogin from "./Components/PostLogin.jsx";
+import ShippingAddressForm from "./Containers/ShippingAddressForm.jsx";
+import CheckoutForm from "./Containers/ShippingAddressForm.jsx";
+import OrderSuccess from "./Containers/OrderSuccess.jsx";
+import ViewOrder from "./Containers/ViewOrder .jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -75,6 +79,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     }
                   />
                   <Route path="/post-login" element={<PostLogin />} />
+                  <Route path="/CheckoutForm" element={<CheckoutForm />} />
+                  <Route path="/OrderSuccess" element={<OrderSuccess />} />
+                  <Route path="/ViewOrder" element={<ViewOrder />} />
 
                   {/* Auth pages */}
                   <Route path="/ForgetPassword" element={<ForgetPassword />} />

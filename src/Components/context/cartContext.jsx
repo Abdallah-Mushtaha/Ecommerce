@@ -116,6 +116,10 @@ export default function CartProvider({ children }) {
     setCartItems((prevItems) => [...prevItems, { ...item, quantity: 1 }]);
     return true;
   };
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cart");
+  };
 
   return (
     <CartContext.Provider
@@ -127,6 +131,7 @@ export default function CartProvider({ children }) {
         removeCartItem,
         addFavoriteItem,
         removeFavoriteItem,
+        clearCart,
         favoriteItems,
       }}
     >

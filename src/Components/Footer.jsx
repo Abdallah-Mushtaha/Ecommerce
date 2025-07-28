@@ -70,7 +70,7 @@ const Footer = () => {
       .then((data) => setCategories(data))
       .catch((error) => console.log(error));
   }, []);
-  console.log(categories);
+  // console.log(categories);
   const Linkes = [
     { title: "Home", link: "/" },
     { title: "About", link: "/about" },
