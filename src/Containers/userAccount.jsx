@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import AuthContext from "../Components/Account/Auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { fakeUpdatePassword } from "../Components/Account/api";
 import toast from "react-hot-toast";
 
@@ -11,6 +11,10 @@ export default function UserAccount() {
   const [newPass, setNewPass] = useState("");
   const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
+
+  const orders = localStorage.getItem("orders")
+    ? JSON.parse(localStorage.getItem("orders"))
+    : [];
 
   if (!auth) {
     navigate("/login");
@@ -111,7 +115,33 @@ export default function UserAccount() {
               <h3 className="text-lg font-semibold mb-4 text-gray-700">
                 Order History
               </h3>
-              <div className="text-gray-500">You have no orders yet.</div>
+              {orders.length > 0 ? (
+                <div className="space-y-4 ">
+                  {orders.map((order, index) => (
+                    <Link
+                      key={index}
+                      to="/ViewOrder"
+                      state={{ orderr: order }}
+                      className="block w-full rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-sm hover:shadow-md transition duration-300 hover:bg-gray-50"
+                    >
+                      <p className="text-sm text-gray-600">
+                        <strong className="text-gray-800">Order ID:</strong>{" "}
+                        {order.id}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        <strong className="text-gray-800">Date:</strong>{" "}
+                        {order.date}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        <strong className="text-gray-800">Total:</strong> $
+                        {order.total}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-600">No orders found.</p>
+              )}
             </div>
           )}
 

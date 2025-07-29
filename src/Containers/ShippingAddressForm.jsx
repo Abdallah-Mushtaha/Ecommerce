@@ -146,6 +146,25 @@ export default function CheckoutForm() {
     };
 
     localStorage.setItem("checkoutData", JSON.stringify(fullCheckoutData));
+
+    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    const newOrder = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      formData,
+      cartItems,
+      total: totalAmount,
+    };
+
+    localStorage.setItem(
+      "orders",
+      JSON.stringify([...existingOrders, newOrder])
+    );
+
+    // 🟢 هذا هو السطر الجديد الذي يجب إضافته هنا:
+    localStorage.removeItem("orderSaved");
+
     navigate("/OrderSuccess");
     clearCart();
     localStorage.removeItem("checkoutFormData");

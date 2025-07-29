@@ -1,33 +1,92 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { CartContext } from "../Components/context/cartContext";
-import { ShoppingBag, Calendar, Truck, CreditCard, Home } from "react-feather";
+import { useNavigate, useLocation } from "react-router";
+import { ShoppingBag, Calendar, Truck, Home } from "react-feather";
 import html2pdf from "html2pdf.js";
 
 export default function ViewOrder() {
-  //   const { cartItems } = useContext(CartContext);
-  const [order, setOrder] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { orderr } = location.state || {};
   const printRef = useRef();
 
+  const [order, setOrder] = useState(null);
+
   useEffect(() => {
+    if (orderr) {
+      const productsTotal = orderr.cartItems.reduce(
+        (sum, item) => sum + item.price * (item.quantity || 1),
+        0
+      );
+
+      const shippingFee =
+        orderr.formData?.country?.toLowerCase() === "egypt" ? 50 : 100;
+
+      const transformedOrder = {
+        id: `#ORD-${orderr.id.toString().slice(-6)}`,
+        date: new Date(orderr.date).toLocaleDateString("en-GB"),
+        status: "Processing",
+        items: orderr.cartItems,
+        shippingAddress: `${orderr.formData.address}, ${orderr.formData.street}, ${orderr.formData.building}, ${orderr.formData.houseNumber}, ${orderr.formData.city}, ${orderr.formData.country}`,
+        paymentMethod: orderr.formData.paymentMethod,
+        email: orderr.formData.email,
+        phone: orderr.formData.phone,
+        trackingNumber: `TRK-${Math.floor(Math.random() * 1000000)}`,
+        total: orderr.total,
+        productsTotal,
+        shippingFee,
+      };
+
+      setOrder(transformedOrder);
+
+      // 🟢 نحذف العلامة حتى لا تمنع حفظ الطلب التالي
+      localStorage.removeItem("orderSaved");
+
+      return;
+    }
+
     const checkoutData = JSON.parse(localStorage.getItem("checkoutData"));
-    if (!checkoutData) return;
+    if (!checkoutData) {
+      navigate("/userAccounts");
+      return;
+    }
 
     const formData = checkoutData.formData;
     const storedItems = checkoutData.cartItems;
 
-    if (!formData || !storedItems) return;
+    if (!formData || !storedItems) {
+      navigate("/ViewOrder");
+      return;
+    }
 
     const productsTotal = storedItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+      (sum, item) => sum + item.price * (item.quantity || 1),
       0
     );
+
     const shippingFee = formData.country?.toLowerCase() === "egypt" ? 50 : 100;
 
-    setOrder({
-      id: `#ORD-${Date.now().toString().slice(-6)}`,
-      date: new Date().toLocaleDateString("en-GB"),
+    const newOrder = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      formData,
+      cartItems: storedItems,
+      total: productsTotal + shippingFee,
+    };
+
+    const alreadySaved = localStorage.getItem("orderSaved");
+
+    if (!alreadySaved) {
+      const previousOrders = JSON.parse(localStorage.getItem("orders")) || [];
+      localStorage.setItem(
+        "orders",
+        JSON.stringify([...previousOrders, newOrder])
+      );
+      localStorage.setItem("orderSaved", "true");
+    }
+
+    const transformedOrder = {
+      id: `#ORD-${newOrder.id.toString().slice(-6)}`,
+      date: new Date(newOrder.date).toLocaleDateString("en-GB"),
       status: "Processing",
       items: storedItems,
       shippingAddress: `${formData.address}, ${formData.street}, ${formData.building}, ${formData.houseNumber}, ${formData.city}, ${formData.country}`,
@@ -38,12 +97,13 @@ export default function ViewOrder() {
       total: productsTotal + shippingFee,
       productsTotal,
       shippingFee,
-    });
-  }, []);
+    };
+
+    setOrder(transformedOrder);
+  }, [orderr, navigate]);
 
   const handleDownloadPDF = () => {
     const element = printRef.current;
-
     const opt = {
       margin: 0.5,
       filename: `${order.id}_invoice.pdf`,
@@ -51,7 +111,6 @@ export default function ViewOrder() {
       html2canvas: { scale: 2 },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     };
-
     html2pdf().set(opt).from(element).save();
   };
 
@@ -64,9 +123,8 @@ export default function ViewOrder() {
   }
 
   return (
-    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8 mt-52">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 mt-52">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <div className="flex justify-between items-center mb-8 print:hidden">
           <h1 className="text-2xl font-bold text-gray-800">🧾 Order Summary</h1>
           <button
@@ -78,9 +136,7 @@ export default function ViewOrder() {
           </button>
         </div>
 
-        {/* Printable Section */}
         <div ref={printRef} className="bg-white shadow rounded-lg p-6">
-          {/* Order Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700 mb-6">
             <div className="flex items-center">
               <ShoppingBag className="mr-2 text-gray-500" />
@@ -105,14 +161,13 @@ export default function ViewOrder() {
             </div>
           </div>
 
-          {/* Items */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold border-b pb-2 mb-4">
               🛍️ Items
             </h2>
-            {order.items.map((item) => (
+            {order.items.map((item, idx) => (
               <div
-                key={item.id}
+                key={idx}
                 className="flex justify-between items-center py-2 border-b last:border-none"
               >
                 <div>
@@ -120,12 +175,11 @@ export default function ViewOrder() {
                     {item.title} x{item.quantity}
                   </p>
                 </div>
-                <div>{item.price * item.quantity} EGP</div>
+                <div>{(item.price * item.quantity).toFixed(2)} EGP</div>
               </div>
             ))}
           </div>
 
-          {/* Totals */}
           <div className="border-t pt-4 text-sm">
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
@@ -133,7 +187,7 @@ export default function ViewOrder() {
             </div>
             <div className="flex justify-between mb-2">
               <span>Shipping</span>
-              <span>{order.shippingFee} EGP</span>
+              <span>{order.shippingFee.toFixed(2)} EGP</span>
             </div>
             <div className="flex justify-between font-bold text-base text-green-600">
               <span>Total</span>
@@ -142,7 +196,6 @@ export default function ViewOrder() {
           </div>
         </div>
 
-        {/* Actions */}
         <div className="mt-6 flex justify-end gap-4 print:hidden">
           <button
             onClick={handleDownloadPDF}
