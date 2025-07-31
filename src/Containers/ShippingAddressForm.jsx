@@ -138,6 +138,19 @@ export default function CheckoutForm() {
   const prevStep = useCallback(() => setStep((prev) => prev - 1), []);
 
   const confirmOrder = useCallback(() => {
+    const authRaw = localStorage.getItem("auth");
+    let Email = "";
+
+    if (authRaw) {
+      try {
+        const authData = JSON.parse(authRaw);
+        Email = authData?.user?.email || "";
+        console.log("User Email:", Email);
+      } catch (err) {
+        console.error("Invalid auth data in localStorage", err);
+      }
+    }
+
     if (!validateStep(3)) return;
 
     const fullCheckoutData = {
@@ -155,6 +168,7 @@ export default function CheckoutForm() {
       formData,
       cartItems,
       total: totalAmount,
+      email: Email, // ← هنا بنربط الطلب بإيميل المستخدم
     };
 
     localStorage.setItem(
@@ -162,7 +176,6 @@ export default function CheckoutForm() {
       JSON.stringify([...existingOrders, newOrder])
     );
 
-    // 🟢 هذا هو السطر الجديد الذي يجب إضافته هنا:
     localStorage.removeItem("orderSaved");
 
     navigate("/OrderSuccess");

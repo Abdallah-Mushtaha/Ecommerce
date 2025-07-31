@@ -12,9 +12,8 @@ export default function UserAccount() {
   const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
 
-  const orders = localStorage.getItem("orders")
-    ? JSON.parse(localStorage.getItem("orders"))
-    : [];
+  const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
+  const orders = allOrders.filter((order) => order.email === auth?.user?.email);
 
   if (!auth) {
     navigate("/login");
@@ -116,7 +115,7 @@ export default function UserAccount() {
                 Order History
               </h3>
               {orders.length > 0 ? (
-                <div className="space-y-4 ">
+                <div className="space-y-4">
                   {orders.map((order, index) => (
                     <Link
                       key={index}

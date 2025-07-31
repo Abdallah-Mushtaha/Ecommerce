@@ -17,7 +17,7 @@ export default function Cart() {
 
   return (
     <div
-      className="cart mt-40 sm:mt-52 
+      className="cart mt-52  
     box-shadow sm:shadow-md h-auto w-50  mx-auto px-10 py-5 container rounded-md sm:shadow-black/70 mb-10 flex flex-col flex-start "
     >
       <h1 className="text-3xl font-bold text-start text-black mb-3">
