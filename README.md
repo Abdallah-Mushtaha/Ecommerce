@@ -1,12 +1,51 @@
-# React + Vite
+# Ecommerce React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern ecommerce web application built with **React** and styled using **Tailwind CSS**. The platform provides full functionality for browsing products, searching, filtering by categories, and purchasing items through a clean and responsive user interface.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- **User Authentication**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+  - Login / Logout
+  - Secure session handling
+
+- **Product Catalog**
+
+  - Display of all available products
+  - Category-based filtering
+  - Live search bar
+  - Product details page (description, price, image, rating)
+
+- **Shopping Cart & Checkout**
+
+  - Add/remove products from cart
+  - Update product quantity
+  - View subtotal / totals
+  - Complete purchase flow
+
+- **Responsive Design**
+  - Fully responsive using Tailwind utility classes
+  - Optimized for desktop and mobile devices
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Usage              |
+| ---------- | ------------------ |
+| React      | Frontend framework |
+| Tailwind   | Styling / CSS      |
+| JavaScript | App logic          |
+
+---
+
+## 📦 Installation
+
+```bash
+git clone <repository-url>
+cd ecommerce-react-app
+npm install
+npm run dev
+```
