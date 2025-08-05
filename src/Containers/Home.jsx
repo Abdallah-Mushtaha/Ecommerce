@@ -62,7 +62,7 @@ export default function Home() {
     FetchingProductes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(MyProductes);
+  // console.log(MyProductes);
   return (
     <PageTransitions>
       <div>

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AiFillStar, AiOutlineHeart } from "react-icons/ai";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { GiShoppingCart } from "react-icons/gi";
@@ -8,9 +8,12 @@ import { CartContext } from "../context/cartContext";
 import { AiOutlineCheck } from "react-icons/ai";
 import toast from "react-hot-toast";
 import PageTransitions from "../PageTransitions";
+import Authcontext from "../Account/Auth";
 
 export default function Productes({ item }) {
   // Check if the item is already in the cart or not
+
+  const { auth } = useContext(Authcontext);
 
   const {
     cartItems,
@@ -93,6 +96,13 @@ export default function Productes({ item }) {
   const ShowIcones = useRef();
   const [isHovered, setIsHovered] = useState(false);
   // console.log(item);
+
+  useEffect(() => {
+    if (!auth) {
+      setClickedFav(false);
+      setClickedCart(false);
+    }
+  }, [auth]);
 
   if (!item) {
     <div className="w-screen h-screen flex items-center justify-center">
