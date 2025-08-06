@@ -1,5 +1,5 @@
 import React from "react";
-import img from "../img/ERORR.svg";
+import img from "../assets/ERORR.svg";
 import gearO from "../img/gearO.png";
 import gearS from "../img/gearS.png";
 import gearT from "../img/gearT.png";
