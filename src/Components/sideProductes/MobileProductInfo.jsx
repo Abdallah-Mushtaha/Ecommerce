@@ -2,7 +2,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { GiShoppingCart } from "react-icons/gi";
 import { AiFillStar } from "react-icons/ai";
-import useAddToCartOrFav from "../../hooks/useAddToCartOrFav";
+import useAddToCartOrFav from "../../Hooks/useAddToCartOrFav";
 
 // Mobile Prooducts Info rmation
 export default function MobileProductInfo({ items }) {
