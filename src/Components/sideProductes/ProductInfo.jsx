@@ -3,7 +3,7 @@ import { FaStarHalfAlt } from "react-icons/fa";
 import { GiShoppingCart } from "react-icons/gi";
 import { AiFillStar } from "react-icons/ai";
 
-import useAddToCartOrFav from "../../hooks/useAddToCartOrFav";
+import useAddToCartOrFav from "../../Hooks/useAddToCartOrFav";
 
 //  Items Ditales Box in Disktop
 
