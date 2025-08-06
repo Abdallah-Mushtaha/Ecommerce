@@ -30,24 +30,35 @@ export default function Cart() {
             return (
               <div
                 key={item.title}
-                className="Wrapper flex justify-between  items-center border-t-2 border-border "
+                className="Wrapper flex  justify-between  items-center border-t-2 border-border "
               >
-                <div className="rightSide mt-5 py-5 flex gap-5">
+                <div className="rightSide mt-5 py-5 flex gap-5 ">
                   {" "}
-                  <div className="image  ">
-                    <img
-                      className="w-28"
-                      src={item.images[0]}
-                      alt={item.title}
-                    />
+                  <div
+                    className="gotToPage cursor-pointer"
+                    onClick={() => navigate(`/productes/${item.id}`)}
+                  >
+                    <div className="image  ">
+                      <img
+                        className="w-28"
+                        src={item.images[0]}
+                        alt={item.title}
+                      />
+                    </div>
                   </div>
                   <div className="content py-4">
-                    <div className="title font-bold capitalize text-sm sm:text-lg lg:text-lg ">
-                      {item.title}
-                    </div>
-                    {/* Price */}
-                    <div className="price py-1 text-gray-400">
-                      ${item.price}
+                    <div
+                      className="gotToPage cursor-pointer"
+                      onClick={() => navigate(`/productes/${item.id}`)}
+                    >
+                      <div className="title font-bold capitalize text-sm sm:text-lg lg:text-lg ">
+                        {item.title}
+                      </div>
+
+                      {/* Price */}
+                      <div className="price py-1 text-gray-400">
+                        ${item.price}
+                      </div>
                     </div>
                     <div className="controller Quantity">
                       <button
@@ -68,8 +79,9 @@ export default function Cart() {
                     </div>
                   </div>
                 </div>
+                {/* ------------------------------- */}
                 {/* Delete Button here will Deleted item from the cart "LocalStorage" */}
-                <div className="leftSide">
+                <div className="leftSide ">
                   <button>
                     <MdDelete
                       className="text-red-600  size-[35px] flex justify-center items-center rounded-md relative sm:right-16 hover:size-[40px] transition-all"

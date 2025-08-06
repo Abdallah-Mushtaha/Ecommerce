@@ -30,6 +30,8 @@ import ShippingAddressForm from "./Containers/ShippingAddressForm.jsx";
 import CheckoutForm from "./Containers/ShippingAddressForm.jsx";
 import OrderSuccess from "./Containers/OrderSuccess.jsx";
 import ViewOrder from "./Containers/ViewOrder .jsx";
+import BlogDetails from "./Containers/BlogDetails.jsx";
+import CheckInternet from "./Containers/CheckInternet.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -82,6 +84,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                   <Route path="/CheckoutForm" element={<CheckoutForm />} />
                   <Route path="/OrderSuccess" element={<OrderSuccess />} />
                   <Route path="/ViewOrder" element={<ViewOrder />} />
+                  <Route path="/blog/:id" element={<BlogDetails />} />
+                  <Route path="*" element={<CheckInternet />} />
 
                   {/* Auth pages */}
                   <Route path="/ForgetPassword" element={<ForgetPassword />} />

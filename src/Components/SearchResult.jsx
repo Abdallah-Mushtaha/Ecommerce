@@ -47,7 +47,7 @@ export default function SearchResult() {
         " "
       ) : (
         <div
-          className="cart mt-40 sm:mt-52 
+          className="cart mt-44 sm:mt-52 
           mx-auto  py-5 container rounded-md transition-all  mb-10 "
         >
           {/* top slide header */}

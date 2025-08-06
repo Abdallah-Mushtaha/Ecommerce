@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Productes from "../Components/sideProductes/Productes";
+import CheckInternet from "./CheckInternet";
 
 const Accessories = () => {
   const [accessories, setAccessories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const accessoryCategories = [
     "mens-watches",
@@ -24,8 +26,10 @@ const Accessories = () => {
           allProducts = [...allProducts, ...data.products];
         }
         setAccessories(allProducts);
+        setError(false);
       } catch (error) {
         console.error("Error fetching accessories:", error);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -34,21 +38,22 @@ const Accessories = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading)
-    return (
-      <div className="text-center mt-10 text-xl">
-        <div class="relative flex w-64 animate-pulse gap-2 p-4">
-          <div class="h-12 w-12 rounded-full bg-slate-400"></div>
-          <div class="flex-1">
-            <div class="mb-1 h-5 w-3/5 rounded-lg bg-slate-400 text-lg"></div>
-            <div class="h-5 w-[90%] rounded-lg bg-slate-400 text-sm"></div>
-          </div>
-          <div class="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-slate-400"></div>
-        </div>
-      </div>
-    );
+  if (error) {
+    return <CheckInternet />;
+  }
 
-  return (
+  return loading ? (
+    <div className="w-screen h-screen flex justify-center items-center text-center mt-10 text-xl">
+      <div class="relative flex w-64 animate-pulse gap-2 p-4">
+        <div class="h-12 w-12 rounded-full bg-slate-400"></div>
+        <div class="flex-1">
+          <div class="mb-1 h-5 w-3/5 rounded-lg bg-slate-400 text-lg"></div>
+          <div class="h-5 w-[90%] rounded-lg bg-slate-400 text-sm"></div>
+        </div>
+        <div class="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-slate-400"></div>
+      </div>
+    </div>
+  ) : (
     <div className="grid grid-cols-1 container mx-auto sm:grid-cols-2 md:grid-cols-3 gap-6 p-6  min-h-screen mt-40">
       {accessories.map((item) => (
         <Productes key={item.id} item={item} />

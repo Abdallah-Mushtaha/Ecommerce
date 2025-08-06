@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Footer = () => {
   const [tags, setTags] = useState([]);
   const navigate = useNavigate();
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   useEffect(() => {
     fetch("https://dummyjson.com/products?limit=100")
@@ -25,6 +26,8 @@ const Footer = () => {
   }, []);
 
   const handleClick = (tag) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     navigate(`/search?query=${encodeURIComponent(tag)}`);
   };
 
@@ -67,8 +70,14 @@ const Footer = () => {
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((error) => console.log(error));
+      .then((data) => {
+        setCategories(data);
+        setLoadingCategories(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoadingCategories(false);
+      });
   }, []);
   // console.log(categories);
   const Linkes = [
@@ -79,7 +88,7 @@ const Footer = () => {
     { title: "Contact", link: "/contact" },
   ];
   return (
-    <footer className="bg-gray-200 p-8 text-gray-700 py-[50px] mt-10">
+    <footer className="bg-gray-200 p-8 text-gray-700 py-[50px] mt-10 relative bottom-0">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Contact Information */}
         <div className="space-y-2">
@@ -119,27 +128,26 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">TOP CATEGORY</h3>
           <div className="grid grid-cols-2 gap-2">
-            {categories ? (
+            {loadingCategories ? (
+              <div className="relative flex w-64 animate-pulse gap-2 p-4 ">
+                <div className="flex-1">
+                  <div className="mb-1 h-2 w-3/5 rounded-lg bg-main/40"></div>
+                  <div className="h-2 w-[90%] rounded-lg bg-main/40"></div>
+                </div>
+                <div className="absolute bottom-5 right-0 h-1 w-1 rounded-full bg-main/40"></div>
+              </div>
+            ) : (
               categories.map((category) => (
                 <Link
                   to={`/category/${category.slug}`}
                   key={category.slug}
                   className="flex flex-col"
                 >
-                  {/* Display full category name but in two columns layout */}
                   <span className="text-sm truncate" title={category.slug}>
                     {category.slug}
                   </span>
                 </Link>
               ))
-            ) : (
-              <div class="relative flex w-64 animate-pulse gap-2 p-4 bg-gray-300">
-                <div class="flex-1">
-                  <div class="mb-1 h-5 w-3/5 rounded-lg bg-main text-gray-600 text-lg"></div>
-                  <div class="h-5 w-[90%] rounded-lg bg-main text-sm"></div>
-                </div>
-                <div class="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-main"></div>
-              </div>
             )}
           </div>
         </div>
@@ -173,12 +181,12 @@ const Footer = () => {
                 <Link
                   to={
                     btn.store === "Google Play"
-                      ? "https://play.google.com/store/apps"
+                      ? "https://play.google.com/store/games?device=windows"
                       : "https://www.apple.com/app-store/"
                   }
                   key={btn.label}
                   target="_blank"
-                  className={`flex justify-center items-center gap-4 bg-black text-white px-3 py-2 rounded ${btn.className}`}
+                  className={`w-10 flex justify-center items-center gap-4 bg-black text-white px-3 py-2 rounded ${btn.className}`}
                 >
                   {btn.icon} {btn.label}{" "}
                   <span className="text-sm">{btn.store}</span>
@@ -206,8 +214,14 @@ const Footer = () => {
 
       <div className="border-t border-gray-300 mt-8 pt-6 text-center text-sm border-t-1 mx-auto">
         <p>
-          Copyright - E-Commerce © {new Date().getFullYear()} Developed by Abood
-          Mushtaha{" "}
+          Copyright - E-Commerce © {new Date().getFullYear()} Developed by{" "}
+          <a
+            href="https://portfolio-ubtt.vercel.app/"
+            target="_blank"
+            className="font-semibold"
+          >
+            Abood Mushtaha
+          </a>{" "}
         </p>
       </div>
     </footer>

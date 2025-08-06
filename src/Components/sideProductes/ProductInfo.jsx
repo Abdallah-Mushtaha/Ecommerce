@@ -1,88 +1,14 @@
-import React, { useContext, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { GiShoppingCart } from "react-icons/gi";
 import { AiFillStar } from "react-icons/ai";
-import { CartContext } from "../context/cartContext";
-import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+
+import useAddToCartOrFav from "../../hooks/useAddToCartOrFav";
 
 //  Items Ditales Box in Disktop
 
 export default function ProductInfo({ items }) {
-  const {
-    cartItems,
-    addCartItem,
-    removeCartItem,
-    addFavoriteItem,
-    removeFavoriteItem,
-    favoriteItems,
-  } = useContext(CartContext);
-
-  const navigate = useNavigate();
-
-  const [ClickedFav, setClickedFav] = useState(false);
-  const isINFavorite = favoriteItems.some(
-    (favoriteItem) => favoriteItem.id === items.id
-  );
-
-  const handelFavCart = () => {
-    if (isINFavorite) {
-      removeFavoriteItem(items.id);
-      setClickedFav(false);
-    } else {
-      const result = addFavoriteItem(items);
-      if (!result) {
-        // Store the Previous Action
-        localStorage.setItem(
-          "pendingAction",
-          JSON.stringify({
-            type: "Favorite",
-            item: items,
-          })
-        );
-        navigate("/login");
-        return;
-      }
-
-      setClickedFav(true);
-      toast.success(
-        <h1 className="text-md font-normal">{items.title}Added To Favorite</h1>
-      );
-    }
-
-    // console.log(favoriteItems);
-  };
-
-  // Check if the item is already in the cart or not
-  const isINCart = cartItems.some((cartitem) => cartitem.id === items.id);
-  const [ClickedCart, setClickedCart] = useState(false);
-
-  const handleAddToCart = () => {
-    if (isINCart) {
-      removeCartItem(items.id);
-      setClickedCart(false);
-    } else {
-      const result = addCartItem(items);
-      if (!result) {
-        // Store the Previous Action
-        localStorage.setItem(
-          "pendingAction",
-          JSON.stringify({
-            type: "cart",
-            item: items,
-          })
-        );
-        navigate("/login");
-        return;
-      }
-      setClickedCart(true);
-      toast.success(
-        <h1 className="text-md font-normal">{items.title}Added To Cart</h1>
-      );
-    }
-  };
-
+  const { isINCart, isINFav, addToCart, addToFav } = useAddToCartOrFav(items);
   return (
     <div className="itemDitales sm:hidden lg:flex flex flex-col gap-2 justify-start sm:pt-10 items-start">
       {/* Items Ditales Box in Disktop  */}
@@ -92,9 +18,9 @@ export default function ProductInfo({ items }) {
           <button>
             <AiOutlineHeart
               className={`my-4 rounded-full p-2 size-9 transition ${
-                isINFavorite ? "bg-red-600 text-white" : "bg-main text-white"
+                isINFav ? "bg-red-600 text-white" : "bg-main text-white"
               }`}
-              onClick={handelFavCart}
+              onClick={addToFav}
             />
           </button>
         </h2>
@@ -124,11 +50,11 @@ export default function ProductInfo({ items }) {
         </small>
         <button
           className={`  py-3 font-bold px-3 w-48 rounded-full flex items-center gap-2  hover:shadow-xl shadow-black justify-center my-5 text-center transition-all ${
-            isINCart || ClickedCart
+            isINCart
               ? "bg-black/0 border-2 text-black/90  bg-white  border-black hover:text-black "
               : "bg-black/100 text-white border-none "
           }`}
-          onClick={handleAddToCart}
+          onClick={addToCart}
         >
           {isINCart ? "Done Added" : "Add to Cart"}
           <GiShoppingCart />

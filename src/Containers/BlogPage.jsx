@@ -1,74 +1,115 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const BlogPage = () => {
+export default function BlogPage() {
+  const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const limit = 9;
+  const totalPages = 5;
 
-  const BLOG_API = "https://dummyjson.com/posts?limit=6";
-
-  useEffect(() => {
-    fetch(BLOG_API)
+  const fetchBlogs = (pageNumber) => {
+    setLoading(true);
+    const skip = (pageNumber - 1) * limit;
+    fetch(`https://dummyjson.com/posts?limit=${limit}&skip=${skip}`)
       .then((res) => res.json())
       .then((data) => {
         setBlogs(data.posts);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load blogs:", err);
-        setLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchBlogs(page);
+  }, [page]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-20 mt-40">
-      <h1 className="text-4xl font-bold mb-4 text-center">Our Blog</h1>
-      <p className="text-gray-600 mb-12 text-center max-w-2xl mx-auto">
-        Explore tips, stories, and ideas from our team to help you shop smarter
-        and discover new trends.
-      </p>
+    <div className="mt-52 container mx-auto px-4 ">
+      <h2 className="text-3xl font-bold mb-8 text-center">Our Blog</h2>
 
-      {loading ? (
-        <div className="text-center text-gray-400 flex items-center justify-center">
-          <div class="relative flex w-64 animate-pulse gap-2 p-4">
-            <div class="flex-1">
-              <div class="mb-1 h-5 w-3/5 rounded-lg bg-slate-400 text-lg"></div>
-              <div class="h-5 w-[90%] rounded-lg bg-slate-400 text-sm"></div>
-            </div>
-            <div class="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-slate-400"></div>
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* SIDEBAR */}
+        <aside className="w-full lg:w-[280px] border rounded-md p-4 space-y-8 h-fit">
+          <div>
+            <h4 className="font-bold mb-2">Search</h4>
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full border px-3 py-2 rounded"
+            />
+          </div>
+          <div>
+            <h4 className="font-bold mb-2">Categories</h4>
+            <ul className="space-y-1 text-gray-600">
+              <li>- Technology</li>
+              <li>- Business</li>
+              <li>- Lifestyle</li>
+              <li>- Travel</li>
+              <li>- Fashion</li>
+            </ul>
+          </div>
+        </aside>
+
+        {/* BLOG LIST */}
+        <div className="flex-1">
+          <div
+            key={page}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-300"
+            style={{ opacity: loading ? 0.3 : 1 }}
+          >
+            {loading
+              ? Array.from({ length: 9 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="h-[250px] bg-gray-200 animate-pulse rounded-md"
+                  ></div>
+                ))
+              : blogs.map((post) => (
+                  <div
+                    key={post.id}
+                    onClick={() => navigate(`/blog/${post.id}`)}
+                    className="border rounded-lg overflow-hidden hover:shadow-md transition cursor-pointer"
+                  >
+                    <img
+                      src={`https://picsum.photos/seed/blog-${post.id}/600/400`}
+                      alt=""
+                      className="w-full h-40 object-cover"
+                    />
+                    <div className="p-4">
+                      <p className="text-gray-400 text-sm mb-1">
+                        #{post.id} – {post.tags[0]}
+                      </p>
+                      <h3 className="font-bold mb-2 line-clamp-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-gray-600 line-clamp-2">{post.body}</p>
+                    </div>
+                  </div>
+                ))}
+          </div>
+
+          {/* PAGINATION */}
+          <div className="mt-10 flex justify-center gap-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  setPage(index + 1);
+                }}
+                className={`px-4 py-2 rounded border ${
+                  page === index + 1
+                    ? "bg-main text-white"
+                    : "bg-white hover:bg-gray-100"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
           </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogs.map((post) => (
-            <div
-              key={post.id}
-              className="bg-white rounded-xl shadow-md overflow-hidden transition hover:shadow-xl"
-            >
-              <img
-                src={`https://picsum.photos/seed/blog-${post.id}/600/400`}
-                alt={post.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <p className="text-sm text-gray-400 mb-1">Post #{post.id}</p>
-                <h2 className="text-xl font-semibold mb-2 capitalize">
-                  {post.title}
-                </h2>
-                <p className="text-gray-600 mb-4 line-clamp-3">{post.body}</p>
-                <a
-                  href={`https://example.com`}
-                  target="_blank"
-                  className="text-indigo-600 font-medium hover:underline"
-                >
-                  Read more →
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      </div>
     </div>
   );
-};
-
-export default BlogPage;
+}

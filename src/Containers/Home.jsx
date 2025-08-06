@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import HeroSlider from "../Components/HeroSlider";
 import SideProductes from "../Components/sideProductes/slideProductes";
 import PageTransitions from "../Components/PageTransitions";
+import CheckInternet from "./CheckInternet";
 
 export default function Home() {
+  const [error, setError] = useState(false);
   // All Categorys in the site
   const Categorys = [
     "beauty",
@@ -54,6 +56,7 @@ export default function Home() {
         setMyProductes(ProductData);
       } catch (error) {
         console.error("Filed to fetch data :: " + error);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -63,6 +66,11 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // console.log(MyProductes);
+
+  if (error) {
+    return <CheckInternet />;
+  }
+
   return (
     <PageTransitions>
       <div>
