@@ -124,7 +124,7 @@ const Footer = () => {
           </a>
         </div>
 
-        {/* Top Category Modify */}
+        {/* Top Category  */}
         <div>
           <h3 className="text-lg font-semibold mb-4">TOP CATEGORY</h3>
           <div className="grid grid-cols-2 gap-2">
