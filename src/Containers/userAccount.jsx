@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import AuthContext from "../Components/Account/Auth";
 import { Link, useNavigate } from "react-router";
 import { fakeUpdatePassword } from "../Components/Account/api";
@@ -10,10 +10,65 @@ export default function UserAccount() {
   const [current, setCurrent] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
   const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
   const orders = allOrders.filter((order) => order.email === auth?.user?.email);
+
+  useEffect(() => {
+    if (auth?.user?.email) {
+      const storedImage = localStorage.getItem(
+        `profileImage-${auth.user.email}`
+      );
+      if (storedImage) {
+        // Verify if the stored image is valid
+        const img = new Image();
+        img.src = storedImage;
+        img.onload = () => setProfileImage(storedImage);
+        img.onerror = () => setProfileImage("");
+      }
+    }
+  }, [auth?.user?.email]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type and size
+      if (!file.type.match("image.*")) {
+        toast.error("Please select an image file");
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("Image size should be less than 2MB");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadstart = () => toast.loading("Uploading image...");
+      reader.onloadend = () => {
+        toast.dismiss();
+        const result = reader.result;
+        // Verify the image before setting it
+        const img = new Image();
+        img.src = result;
+        img.onload = () => {
+          setProfileImage(result);
+          localStorage.setItem(`profileImage-${auth.user.email}`, result);
+          toast.success("Profile image updated");
+        };
+        img.onerror = () => {
+          toast.error("Invalid image file");
+        };
+      };
+      reader.onerror = () => {
+        toast.dismiss();
+        toast.error("Error reading image file");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   if (!auth) {
     navigate("/login");
@@ -58,11 +113,40 @@ export default function UserAccount() {
       <div className="bg-white shadow-xl rounded-2xl p-6 sm:p-10 border border-gray-100">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-center gap-6 border-b pb-6">
-          <img
-            src={`https://ui-avatars.com/api/?name=${email}&background=random&size=128`}
-            alt="User Avatar"
-            className="w-24 h-24 rounded-full border-4 border-gray-300 shadow-md"
-          />
+          <div className="relative group">
+            <div className="relative w-32 h-32 min-w-[128px] min-h-[128px]">
+              <img
+                src={
+                  profileImage ||
+                  `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    email
+                  )}&background=random&size=256`
+                }
+                alt="User Avatar"
+                className="w-full h-full rounded-full border-4 border-gray-300 shadow-md object-cover"
+                onError={(e) => {
+                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                    email
+                  )}&background=random&size=256`;
+                }}
+              />
+              <button
+                onClick={() => fileInputRef.current.click()}
+                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 rounded-full transition-all duration-300"
+              >
+                <span className="opacity-0 group-hover:opacity-100 text-white text-sm font-medium transition-all duration-300">
+                  Change
+                </span>
+              </button>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              className="hidden"
+            />
+          </div>
           <div className="text-center sm:text-left">
             <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
               {email}
