@@ -6,6 +6,7 @@ import CheckInternet from "./CheckInternet";
 
 export default function Home() {
   const [error, setError] = useState(false);
+
   // All Categorys in the site
   const Categorys = [
     "beauty",
@@ -33,39 +34,83 @@ export default function Home() {
     "womens-shoes",
     "womens-watches",
   ];
+
   // Data of Productes
   const [MyProductes, setMyProductes] = useState({});
-  const [Loading, setLoading] = useState(true); // do this loading when fetching Data take time some times
+  const [loadedCategories, setLoadedCategories] = useState([]);
+  const [Loading, setLoading] = useState(true);
 
-  //  Do Fetching of Api Each Category in the categorys
-  useEffect(() => {
-    const FetchingProductes = async () => {
-      try {
-        const result = await Promise.all(
-          Categorys.map(async (categore) => {
-            const response = await fetch(
-              `https://dummyjson.com/products/category/${categore}`
-            );
-            const data = await response.json();
-            return { [categore]: data.products };
-          })
+  // Fetch Data of One Category
+  const fetchCategory = async (category) => {
+    try {
+      // Get from localStorage if found
+      const cached = localStorage.getItem(`products_${category}`);
+      if (cached) {
+        setMyProductes((prev) => ({
+          ...prev,
+          [category]: JSON.parse(cached),
+        }));
+        setLoadedCategories((prev) =>
+          prev.includes(category) ? prev : [...prev, category]
         );
-        //  Saving Data
-        const ProductData = Object.assign({}, ...result);
-        // now we need put this ProductsData in State to be able to use if some Change detected or not like Editing
-        setMyProductes(ProductData);
-      } catch (error) {
-        console.error("Filed to fetch data :: " + error);
-        setError(true);
-      } finally {
-        setLoading(false);
+      }
+
+      // Fetch from API
+      const res = await fetch(
+        `https://dummyjson.com/products/category/${category}`
+      );
+      const data = await res.json();
+
+      // Save in State
+      setMyProductes((prev) => ({
+        ...prev,
+        [category]: data.products,
+      }));
+
+      // Save in localStorage
+      localStorage.setItem(
+        `products_${category}`,
+        JSON.stringify(data.products)
+      );
+
+      // Add to loadedCategories without duplication
+      setLoadedCategories((prev) =>
+        prev.includes(category) ? prev : [...prev, category]
+      );
+    } catch (err) {
+      console.error("Filed to fetch data :: " + err);
+      setError(true);
+    }
+  };
+
+  // Do Fetching for All Categorys
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadCategories = async () => {
+      // Fetch first 5 categorys to make the page show fast
+      const firstBatch = Categorys.slice(0, 5);
+      for (let cat of firstBatch) {
+        if (!isMounted) return;
+        await fetchCategory(cat);
+      }
+      setLoading(false);
+
+      // Fetch the rest in background
+      const rest = Categorys.slice(5);
+      for (let cat of rest) {
+        if (!isMounted) return;
+        await fetchCategory(cat);
       }
     };
 
-    FetchingProductes();
+    loadCategories();
+
+    return () => {
+      isMounted = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // console.log(MyProductes);
 
   if (error) {
     return <CheckInternet />;
@@ -75,7 +120,7 @@ export default function Home() {
     <PageTransitions>
       <div>
         <HeroSlider />
-        {Loading ? (
+        {Loading && loadedCategories.length === 0 ? (
           <div className="w-screen h-screen flex items-center justify-center">
             <div className="flex flex-row gap-2 ">
               <div className="animate-pulse bg-gray-300 w-14 h-14 rounded-lg"></div>
@@ -87,16 +132,13 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          Categorys.map((categore, index) => {
-            // MyProductes[categore] its mean get the data of this categore
-            return (
-              <SideProductes
-                key={categore + index}
-                products={MyProductes[categore]}
-                title={categore.replace("-", " ")}
-              />
-            );
-          })
+          loadedCategories.map((category, index) => (
+            <SideProductes
+              key={category + index}
+              products={MyProductes[category]}
+              title={category.replace("-", " ")}
+            />
+          ))
         )}
       </div>
     </PageTransitions>

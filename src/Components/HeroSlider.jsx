@@ -1,51 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchSlides = async () => {
+  const res = await fetch("https://dummyjson.com/products?limit=3");
+  const data = await res.json();
+  return data.products.map((item) => ({
+    id: item.id,
+    image: item.thumbnail,
+    subtitle: "MINI-XGU SPEAKER",
+    title: (
+      <>
+        {item.title}
+        <br className="hidden sm:block" />
+        Speaker Lamp
+      </>
+    ),
+    description: item.description,
+  }));
+};
 
 export default function HeroSlider() {
-  const [slidesData, setSlidesData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("https://dummyjson.com/products?limit=3")
-      .then((res) => res.json())
-      .then((data) => {
-        const formatted = data.products.map((item) => ({
-          id: item.id,
-          image: item.thumbnail,
-          subtitle: "MINI-XGU SPEAKER",
-          title: (
-            <>
-              {item.title}
-              <br className="hidden sm:block" />
-              Speaker Lamp
-            </>
-          ),
-          description: item.description,
-        }));
-        setSlidesData(formatted);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching slider data:", err);
-        setLoading(false);
-      });
-  }, []);
+  const { data: slidesData, isLoading } = useQuery({
+    queryKey: ["heroSlides"],
+    queryFn: fetchSlides,
+    staleTime: 1000 * 60 * 10,
+    cacheTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <div className="hero-slider w-full py-4 sm:py-6 lg:py-8 bg-gray-50 overflow-hidden container mx-auto my-6">
-      {loading ? (
-        <div class="relative flex w-64 animate-pulse gap-2 p-4 justify-center items-center">
-          <div class="h-12 w-12 rounded-full bg-slate-400"></div>
-          <div class="flex-1">
-            <div class="mb-1 h-5 w-3/5 rounded-lg bg-slate-400 text-lg"></div>
-            <div class="h-5 w-[90%] rounded-lg bg-slate-400 text-sm"></div>
+      {isLoading ? (
+        <div className="relative flex w-64 animate-pulse gap-2 p-4 justify-center items-center">
+          <div className="h-12 w-12 rounded-full bg-slate-400"></div>
+          <div className="flex-1">
+            <div className="mb-1 h-5 w-3/5 rounded-lg bg-slate-400 text-lg"></div>
+            <div className="h-5 w-[90%] rounded-lg bg-slate-400 text-sm"></div>
           </div>
-          <div class="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-slate-400"></div>
+          <div className="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-slate-400"></div>
         </div>
       ) : (
         <Swiper
@@ -75,7 +73,7 @@ export default function HeroSlider() {
                   <h4 className="text-sm sm:text-base md:text-lg font-medium uppercase tracking-wider mb-2 text-gray-800">
                     {slide.subtitle}
                   </h4>
-                  <h3 className="text-xl  sm:text-2xl md:text-3xl lg:text-4xl font-bold uppercase mb-4 leading-tight text-black">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold uppercase mb-4 leading-tight text-black">
                     {slide.title}
                   </h3>
                   <p className="text-sm sm:text-base line-clamp-2 text-gray-600 mb-6">
